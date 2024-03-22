@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("books")
@@ -27,7 +26,7 @@ public class BookController {
     }
 
     @PostMapping("add")  //http://localhost:8080/books/add
-    public String processAddEmployerForm(@ModelAttribute @Valid Book newBook,
+    public String processAddBookForm(@ModelAttribute @Valid Book newBook,
                                          Errors errors, Model model) {
 
         if (errors.hasErrors()) {
@@ -39,5 +38,55 @@ public class BookController {
 
         return "redirect:";
     }
+    @GetMapping("update") //http://localhost:8080/books/update?bookId=xx
+    public String displayUpdateBookForm(@RequestParam Integer bookId, Model model){
+        Optional<Book> result = bookRepository.findById(bookId);
+        Book book = result.get();
+        model.addAttribute(book);
 
+        return "books/update";
+    }
+    @PostMapping("update") //http://localhost:8080/books/update
+    public String processUpdateBookForm(@ModelAttribute @Valid Book book,
+                                    Errors errors,
+                                    Model model) {
+
+
+        if (!errors.hasErrors()) {
+
+            bookRepository.save(book);
+
+            return "redirect:detail?bookId=" + book.getId();
+        }
+
+
+        return "redirect:update";
+    }
+    @GetMapping("detail") //http://localhost:8080/books/detail?bookId=xx
+    public String displayBookDetail(@RequestParam Integer bookId, Model model){
+        Optional<Book> result = bookRepository.findById(bookId);
+        Book book = result.get();
+        model.addAttribute(book);
+
+        return "books/detail";
+    }
+
+    @GetMapping("delete")
+    public String displayDeleteBookForm(Model model) {
+        model.addAttribute("title", "Delete Books");
+        model.addAttribute("books", bookRepository.findAll());
+        return "books/delete";
+    }
+
+    @PostMapping("delete")
+    public String processDeleteBook(@RequestParam(required = false) Integer[] bookIds) {
+
+        if (bookIds != null) {
+            for (int id : bookIds) {
+                bookRepository.deleteById(id);
+            }
+        }
+
+        return "redirect:/books";
+    }
 }
