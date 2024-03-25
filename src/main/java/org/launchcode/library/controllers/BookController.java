@@ -2,6 +2,7 @@ package org.launchcode.library.controllers;
 
 import jakarta.validation.Valid;
 import org.launchcode.library.models.Book;
+import org.launchcode.library.models.BooksInventory;
 import org.launchcode.library.models.data.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,17 +44,26 @@ public class BookController {
         Optional<Book> result = bookRepository.findById(bookId);
         Book book = result.get();
         model.addAttribute(book);
+        model.addAttribute(new BooksInventory());
 
         return "books/update";
     }
     @PostMapping("update") //http://localhost:8080/books/update
-    public String processUpdateBookForm(@ModelAttribute @Valid Book book,
+    public String processUpdateBookForm(@ModelAttribute @Valid Book book,@ModelAttribute @Valid BooksInventory booksInventory,
                                     Errors errors,
                                     Model model) {
 
 
         if (!errors.hasErrors()) {
 
+            if(booksInventory.getBooksToAdd()>0) {
+                int copies=book.getCopies()+ booksInventory.getBooksToAdd();
+                book.setCopies(copies);
+            }
+            if(booksInventory.getBooksToRemove()>0){
+                int copies= book.getCopies()- booksInventory.getBooksToRemove();
+                book.setCopies(copies);
+            }
             bookRepository.save(book);
 
             return "redirect:detail?bookId=" + book.getId();
