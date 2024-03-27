@@ -1,6 +1,8 @@
 package org.launchcode.library.controllers;
 
+import org.launchcode.library.models.dto.UserDto;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -30,7 +32,13 @@ public class AuthenticationController {
 
     // handler method to handle user registration form request
 
-
+    @GetMapping("/register")
+    public String showRegistrationForm(Model model){
+        // creates model object to store form data
+        UserDto user = new UserDto();
+        model.addAttribute("user", user);
+        return "user/register";
+    }
 
 
 }
