@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+//verifying user by username while login
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 

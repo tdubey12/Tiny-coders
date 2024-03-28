@@ -9,6 +9,8 @@ import java.util.List;
 @Table(name="users")
 public class User {
 
+    //creates tables in database
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -26,9 +28,6 @@ public class User {
 
     @Column(nullable=false)
     private String password;
-
-    @Column(name="reset_password_token")
-    private String resetPasswordToken;
 
     public Long getId() {
         return id;
@@ -67,14 +66,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getResetPasswordToken() {
-        return resetPasswordToken;
-    }
-
-    public void setResetPasswordToken(String resetPasswordToken) {
-        this.resetPasswordToken = resetPasswordToken;
     }
 
     public List<Role> getRoles() {
