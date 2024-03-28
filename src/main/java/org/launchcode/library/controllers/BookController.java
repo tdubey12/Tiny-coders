@@ -88,15 +88,17 @@ public class BookController {
         return "books/detail";
     }
 
-    @GetMapping("delete")
-    public String displayDeleteBookForm(Model model) {
+    @GetMapping("deletelist") //http://localhost:8080/books/deletelist
+    public String displayDeleteBooksForm(Model model) {
         model.addAttribute("title", "Delete Books");
         model.addAttribute("books", bookRepository.findAll());
         return "books/delete";
     }
 
-    @PostMapping("delete")
-    public String processDeleteBook(@RequestParam(required = false) Integer[] bookIds) {
+
+
+    @PostMapping("deletebooks") //http://localhost:8080/books/delete
+    public String processDeleteBooks(@RequestParam(required = false) Integer[] bookIds) {
 
         if (bookIds != null) {
             for (int id : bookIds) {
@@ -104,6 +106,26 @@ public class BookController {
             }
         }
 
-        return "redirect:/books";
+        return "redirect:";
+    }
+    @GetMapping("delete") //http://localhost:8080/books/delete?bookId=xx
+    public String displayBookDelete(@RequestParam Integer bookId, Model model){
+        Optional<Book> result = bookRepository.findById(bookId);
+        Book book = result.get();
+        model.addAttribute(book);
+
+        return "books/delete";
+    }
+
+    @PostMapping("delete") //http://localhost:8080/books/delete?bookId=xxxx
+    public String processDeleteBook(@RequestParam(required = false) Integer bookId) {
+
+        if (bookId != null) {
+
+            bookRepository.deleteById(bookId);
+        }
+
+
+        return "redirect:";
     }
 }
