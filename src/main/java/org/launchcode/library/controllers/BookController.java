@@ -18,6 +18,13 @@ public class BookController {
     @Autowired
     private BookRepository bookRepository;
 
+    @GetMapping("/") //http://localhost:8080/books/
+    public String index(Model model) {
+        model.addAttribute("title", "All Books");
+        model.addAttribute("books", bookRepository.findAll());
+        return "books/index";
+    }
+
     @GetMapping("add") //http://localhost:8080/books/add
     public String displayAddBookForm(Model model) {
 
