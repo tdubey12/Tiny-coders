@@ -10,7 +10,6 @@ import java.util.List;
 public class User {
 
     //creates tables in database
-
     private static final long serialVersionUID = 1L;
 
     @Id

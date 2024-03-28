@@ -33,16 +33,13 @@ public class AuthenticationController {
 
     @GetMapping("/index")
     public String home() {
-
         return "user/index";
     }
-
 
     // handler method to handle login request
 
     @GetMapping("/login")
     public String login() {
-
         return "user/login";
     }
 
