@@ -46,6 +46,8 @@ public class SpringSecurity {
         return http.build();
     }
 
+    // setup UserDetailService, password enconder to build an AuthenticationManager.
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
