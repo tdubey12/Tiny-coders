@@ -18,6 +18,7 @@ public class UserDto {
     @NotEmpty(message = "Password should not be empty")
     private String password;
 
+
     public UserDto(Long id, String firstName, String lastName, String userName, String email, String password) {
         this.id = id;
         this.firstName = firstName;
@@ -54,14 +55,6 @@ public class UserDto {
         this.lastName = lastName;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -76,5 +69,13 @@ public class UserDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }
