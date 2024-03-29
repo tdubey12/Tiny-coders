@@ -32,6 +32,11 @@ public class SpringSecurity {
                                         //.requestMatchers("/reset_password").permitAll()
                                         .requestMatchers("/index").permitAll()
                                         .requestMatchers("/landing").hasRole("ADMIN")
+                                        .requestMatchers("/search/**").hasRole("ADMIN")
+                                        .requestMatchers("/books/**").hasRole("ADMIN")
+                                        .requestMatchers("/students/**").hasRole("ADMIN")
+                                        .requestMatchers("/bookmanagement/**").hasRole("ADMIN")
+                                        .requestMatchers("/studentmanagement/**").hasRole("ADMIN")
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
