@@ -2,7 +2,9 @@ package org.launchcode.library.controllers;
 
 import jakarta.validation.Valid;
 import org.launchcode.library.models.Book;
+import org.launchcode.library.models.BookCheckout;
 import org.launchcode.library.models.BooksInventory;
+import org.launchcode.library.models.data.BookCheckoutRepository;
 import org.launchcode.library.models.data.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,8 +17,12 @@ import java.util.Optional;
 @Controller
 @RequestMapping("books")
 public class BookController {
+
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private BookCheckoutRepository bookCheckoutRepository;
 
     @GetMapping("/") //http://localhost:8080/books/
     public String index(Model model) {
@@ -40,6 +46,7 @@ public class BookController {
         if (errors.hasErrors()) {
             return "books/add";
         }
+        newBook.setAvailableCopiesToIssue(newBook.getCopies());
 
         bookRepository.save(newBook);
 
@@ -65,11 +72,17 @@ public class BookController {
 
             if(booksInventory.getBooksToAdd()>0) {
                 int copies=book.getCopies()+ booksInventory.getBooksToAdd();
+                int availableCopies=book.getAvailableCopiesToIssue()+booksInventory.getBooksToAdd();
+
                 book.setCopies(copies);
+                book.setAvailableCopiesToIssue(availableCopies);
             }
             if(booksInventory.getBooksToRemove()>0){
                 int copies= book.getCopies()- booksInventory.getBooksToRemove();
+
+                int availableCopies= book.getAvailableCopiesToIssue()- booksInventory.getBooksToRemove();
                 book.setCopies(copies);
+                book.setAvailableCopiesToIssue(availableCopies);
             }
             bookRepository.save(book);
 
@@ -118,7 +131,7 @@ public class BookController {
     }
 
     @PostMapping("delete") //http://localhost:8080/books/delete?bookId=xxxx
-    public String processDeleteBook(@RequestParam(required = false) Integer bookId) {
+    public String processDeleteBook(@RequestParam(required = true) Integer bookId) {
 
         if (bookId != null) {
 
@@ -128,4 +141,45 @@ public class BookController {
 
         return "redirect:";
     }
+    @GetMapping("checkout") //http://localhost:8080/books/checkout
+    public String displayCheckout(Model model){
+        model.addAttribute(new BookCheckout());
+
+        return "books/checkout";
+    }
+
+    @PostMapping("checkout") //http://localhost:8080/books/checkout?bookId=xxxx
+    public String processCheckout(@ModelAttribute @Valid BookCheckout newBookCheckout,int bookId,
+                                  Errors errors, Model model) {
+
+        if (errors.hasErrors()) {
+            return "books/checkout";
+        }
+
+
+        int studentId = newBookCheckout.getStudentId();
+
+        Optional<Book> result = bookRepository.findById(bookId);
+        Book book = result.get();
+        newBookCheckout.setBook(book);
+
+        int availableCopies = book.getAvailableCopiesToIssue();
+
+        if (newBookCheckout.isCheckout()) {
+            availableCopies--;
+        }
+        else {
+
+            availableCopies++;
+        }
+        bookCheckoutRepository.save(newBookCheckout);
+
+        book.setAvailableCopiesToIssue(availableCopies);
+
+        bookRepository.save(book);
+
+        return "redirect:";
+    }
+
+
 }

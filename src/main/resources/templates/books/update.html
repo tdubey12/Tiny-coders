@@ -11,7 +11,7 @@
         method="post">
     <div class="form-group">
         <input th:field="${book.id}" type="hidden" class="form-control"/>
-
+        <input th:field="${book.availableCopiesToIssue}" type="hidden" class="form-control"/>
         <label>Name
             <input th:field="${book.name}" class="form-control">
         </label>
