@@ -12,6 +12,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Optional;
 
 @Controller
@@ -142,14 +146,15 @@ public class BookController {
         return "redirect:";
     }
     @GetMapping("checkout") //http://localhost:8080/books/checkout
-    public String displayCheckout(Model model){
+    public String displayCheckout(Model model, int bookId){
         model.addAttribute(new BookCheckout());
+        model.addAttribute("bookId",bookId);
 
         return "books/checkout";
     }
 
     @PostMapping("checkout") //http://localhost:8080/books/checkout?bookId=xxxx
-    public String processCheckout(@ModelAttribute @Valid BookCheckout newBookCheckout,int bookId,
+    public String processCheckout(@ModelAttribute @Valid BookCheckout newBookCheckout,int bookId, int studentId,
                                   Errors errors, Model model) {
 
         if (errors.hasErrors()) {
@@ -157,11 +162,14 @@ public class BookController {
         }
 
 
-        int studentId = newBookCheckout.getStudentId();
+        newBookCheckout.setCheckout(true);
 
         Optional<Book> result = bookRepository.findById(bookId);
         Book book = result.get();
         newBookCheckout.setBook(book);
+
+        //student code later
+        newBookCheckout.setStudentId(studentId);
 
         int availableCopies = book.getAvailableCopiesToIssue();
 
@@ -173,6 +181,48 @@ public class BookController {
             availableCopies++;
         }
         bookCheckoutRepository.save(newBookCheckout);
+
+        book.setAvailableCopiesToIssue(availableCopies);
+
+        bookRepository.save(book);
+
+        return "redirect:";
+    }
+
+    @GetMapping("checkin") //http://localhost:8080/books/checkin
+    public String displayCheckin(Model model, int bookId){
+        model.addAttribute("bookId",bookId);
+
+        return "books/checkin";
+    }
+
+    @PostMapping("checkin") //http://localhost:8080/books/checkout?bookId=xxxx
+    public String processCheckin(@RequestParam(required = true) Integer bookId, @RequestParam(required = true) Integer studentId, @RequestParam(required = true) String actualReturnDate
+                                  ) {
+
+        Optional<Book> result = bookRepository.findById(bookId);
+        Book book = result.get();
+        BookCheckout bookCheckout=bookCheckoutRepository.findByBookIdAndStudentIdAndIsCheckout(bookId,studentId,true);
+        bookCheckout.setCheckout(false);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        try {
+            Date date = formatter.parse(actualReturnDate);
+            bookCheckout.setActualReturnDate(date);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        int availableCopies = book.getAvailableCopiesToIssue();
+
+        if (bookCheckout.isCheckout()) {
+            availableCopies--;
+        }
+        else {
+
+            availableCopies++;
+        }
+        bookCheckoutRepository.save(bookCheckout);
 
         book.setAvailableCopiesToIssue(availableCopies);
 

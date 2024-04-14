@@ -9,19 +9,17 @@
 
 <form  method="post">
     <div class="form-group">
+
         <label>Book Id
             <input th:value="${bookId}" name="bookId" type="text" class="form-control" readonly>
         </label>
         <label>Student Id
             <input name="studentId" type="text" class="form-control" >
         </label>
-        <label>Issue Date
-            <input type="date" th:field="${bookCheckout.issueDate}" th:value="${#dates.format(#dates.createNow() , 'yyyy/MM/dd')}" class="form-control" >
-        </label>
-        <label>Expected Return Date
-            <input type="date" th:field="${bookCheckout.expectedReturnDate}" class="form-control">
-        </label>
 
+        <label>Actual Return Date
+            <input type="date" name="actualReturnDate" th:value="${#dates.format(#dates.createNow() , 'yyyy/MM/dd')}" class="form-control">
+        </label>
 
     </div>
 
