@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<!--head th:replace="fragments :: head"></head-->
+<head th:replace="~{fragments :: head}"></head>
 <body class="container">
 
-<!--header th:replace="fragments :: header"></header-->
+<header th:replace="~{fragments :: header}"></header>
 
 <p th:text="${errorMsg}" style="color:red;"></p>
 
@@ -15,10 +15,7 @@
         <label>Student Id
             <input name="studentId" type="text" class="form-control" >
         </label>
-        <label>Issue Date
-            <input type="date" th:field="${bookCheckout.issueDate}" th:value="${#dates.format(#dates.createNow() , 'yyyy/MM/dd')}" class="form-control" >
-        </label>
-        <label>Expected Return Date
+       <label>Expected Return Date
             <input type="date" th:field="${bookCheckout.expectedReturnDate}" class="form-control">
         </label>
 
