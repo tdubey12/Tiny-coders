@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -12,17 +13,22 @@ import java.util.List;
 
 @Entity
 public class Book extends AbstractEntity{
+    //moved name from AbstarctEntity showing error with student name
+    @NotBlank(message = "Name is required")
+    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
+    private String name;
 
     @Size(max = 500, message = "Description too long!")
     private String description;
 
-
+    @NotBlank(message = "Author Name is required")
     private String authorName;
 
     private int publishingYear;
 
     private double price;
 
+    @NotBlank(message = "Genre is required")
     private String genre;
 
     private int copies;
@@ -45,6 +51,13 @@ public class Book extends AbstractEntity{
     public Book() {
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     public String getDescription() {
         return description;
     }
