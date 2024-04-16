@@ -3,6 +3,7 @@ package org.launchcode.library.controllers;
 import jakarta.validation.Valid;
 import org.launchcode.library.models.Book;
 import org.launchcode.library.models.BookCheckout;
+import org.launchcode.library.models.BookData;
 import org.launchcode.library.models.BooksInventory;
 import org.launchcode.library.models.data.BookCheckoutRepository;
 import org.launchcode.library.models.data.BookRepository;
@@ -12,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 
 @Controller
@@ -24,14 +27,60 @@ public class BookController {
     @Autowired
     private BookCheckoutRepository bookCheckoutRepository;
 
+    //codes for search book by Anitha
+    static HashMap<String, String> bookSearchOptions = new HashMap<>();
+
+    public BookController() {
+
+        bookSearchOptions.put("all", "All");
+        bookSearchOptions.put("name", "Book Name");
+        bookSearchOptions.put("authorName", "Author Name");
+        bookSearchOptions.put("genre", "Genre");
+
+    }
+
     @GetMapping("/") //http://localhost:8080/books/
     public String index(Model model) {
+        //anitha added booksearchoptions
+        model.addAttribute("columns", bookSearchOptions);
+        model.addAttribute("title", "All Books");
+        model.addAttribute("books", bookRepository.findAll());
+        return "books/index";
+    }
+    //Anitha's code for search book
+    @GetMapping("/search")
+    public String search(Model model) {
+        model.addAttribute("columns", bookSearchOptions);
         model.addAttribute("title", "All Books");
         model.addAttribute("books", bookRepository.findAll());
         return "books/index";
     }
 
-    @GetMapping("add") //http://localhost:8080/books/add
+    @PostMapping("/search/results")
+    public String displaySearchResults(Model model, @RequestParam String searchType, @RequestParam String searchTerm){
+        Iterable<Book> books;
+        ArrayList<Book> tempBooks = (ArrayList<Book>) bookRepository.findAll();
+        books = BookData.findByColumnAndValue(searchType, searchTerm, bookRepository.findAll());
+        model.addAttribute("columns", bookSearchOptions);
+        model.addAttribute("title", "Books with " + bookSearchOptions.get(searchType) + ": " + searchTerm);
+        model.addAttribute("books", books);
+        return "books/index";
+    }
+
+    //Anitha's code for search book
+
+    @GetMapping("/books/view/{bookId}")
+    public String viewBook(@PathVariable("bookId")String bookId,Model model) {
+
+        Optional<Book> book = bookRepository.findById(Integer.valueOf(bookId));
+        if(book.isPresent()){
+            Book selectedBook = book.get();
+            model.addAttribute("book", selectedBook);
+        }//else throw error
+        return "books/view";
+    }
+
+    @GetMapping("/add") //http://localhost:8080/books/add
     public String displayAddBookForm(Model model) {
 
         model.addAttribute(new Book());
@@ -39,7 +88,8 @@ public class BookController {
         return "books/add";
     }
 
-    @PostMapping("add")  //http://localhost:8080/books/add
+    //need to change the route to different spring wont able same route for get and post .
+    @PostMapping("/add/save")  //http://localhost:8080/books/add
     public String processAddBookForm(@ModelAttribute @Valid Book newBook,
                                          Errors errors, Model model) {
 
@@ -47,13 +97,13 @@ public class BookController {
             return "books/add";
         }
         newBook.setAvailableCopiesToIssue(newBook.getCopies());
-
         bookRepository.save(newBook);
+        //return "redirect:";
 
-
-        return "redirect:";
+        //added redirect route to success message
+        return "redirect:/books/add?success";
     }
-    @GetMapping("update") //http://localhost:8080/books/update?bookId=xx
+    @GetMapping("/update") //http://localhost:8080/books/update?bookId=xx
     public String displayUpdateBookForm(@RequestParam Integer bookId, Model model){
         Optional<Book> result = bookRepository.findById(bookId);
         Book book = result.get();
@@ -62,7 +112,7 @@ public class BookController {
 
         return "books/update";
     }
-    @PostMapping("update") //http://localhost:8080/books/update
+    @PostMapping("/update/save") //http://localhost:8080/books/update
     public String processUpdateBookForm(@ModelAttribute @Valid Book book,@ModelAttribute @Valid BooksInventory booksInventory,
                                     Errors errors,
                                     Model model) {
@@ -85,12 +135,14 @@ public class BookController {
                 book.setAvailableCopiesToIssue(availableCopies);
             }
             bookRepository.save(book);
+            //return "redirect:detail?bookId=" + book.getId();
 
-            return "redirect:detail?bookId=" + book.getId();
+//just for now i redirected to view page.
+            return "redirect:/books/";
         }
+        //return "redirect:update";
+        return "redirect:/books/update";
 
-
-        return "redirect:update";
     }
     @GetMapping("detail") //http://localhost:8080/books/detail?bookId=xx
     public String displayBookDetail(@RequestParam Integer bookId, Model model){
