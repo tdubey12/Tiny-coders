@@ -41,6 +41,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
 
+    //Role is application specific object but spring security understands only GrantedAuthority, so this method
+    // is converting the collection of Role object to collection of GrantedAuthority
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         Collection<? extends GrantedAuthority> mapRoles = roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
