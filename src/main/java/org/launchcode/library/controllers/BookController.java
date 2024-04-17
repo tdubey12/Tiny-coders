@@ -13,6 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
@@ -84,6 +88,7 @@ public class BookController {
     public String displayAddBookForm(Model model) {
 
         model.addAttribute(new Book());
+        model.addAttribute("title", "Add a book");
 
         return "books/add";
     }
@@ -105,6 +110,8 @@ public class BookController {
     }
     @GetMapping("/update") //http://localhost:8080/books/update?bookId=xx
     public String displayUpdateBookForm(@RequestParam Integer bookId, Model model){
+        model.addAttribute("title", "Update book");
+
         Optional<Book> result = bookRepository.findById(bookId);
         Book book = result.get();
         model.addAttribute(book);
@@ -178,6 +185,7 @@ public class BookController {
         Optional<Book> result = bookRepository.findById(bookId);
         Book book = result.get();
         model.addAttribute(book);
+        model.addAttribute("title", "Delete book");
 
         return "books/delete";
     }
@@ -194,42 +202,55 @@ public class BookController {
         return "redirect:";
     }
     @GetMapping("checkout") //http://localhost:8080/books/checkout
-    public String displayCheckout(Model model){
+    public String displayCheckout(Model model, int bookId){
         model.addAttribute(new BookCheckout());
+        model.addAttribute("bookId",bookId);
+        model.addAttribute("title", "Checkout book");
 
         return "books/checkout";
     }
 
     @PostMapping("checkout") //http://localhost:8080/books/checkout?bookId=xxxx
-    public String processCheckout(@ModelAttribute @Valid BookCheckout newBookCheckout,int bookId,
+    public String processCheckout(@ModelAttribute @Valid BookCheckout newBookCheckout,int bookId, int studentId,
                                   Errors errors, Model model) {
-
         if (errors.hasErrors()) {
             return "books/checkout";
         }
-
-
-        int studentId = newBookCheckout.getStudentId();
-
+        newBookCheckout.setCheckout(true);
         Optional<Book> result = bookRepository.findById(bookId);
         Book book = result.get();
         newBookCheckout.setBook(book);
-
+        //student code later
+        newBookCheckout.setStudentId(studentId);
+        newBookCheckout.setIssueDate(new Date());
         int availableCopies = book.getAvailableCopiesToIssue();
-
-        if (newBookCheckout.isCheckout()) {
-            availableCopies--;
-        }
-        else {
-
-            availableCopies++;
-        }
+        availableCopies--;
         bookCheckoutRepository.save(newBookCheckout);
-
         book.setAvailableCopiesToIssue(availableCopies);
-
         bookRepository.save(book);
+        return "redirect:";
+    }
 
+    @GetMapping("checkin") //http://localhost:8080/books/checkin
+    public String displayCheckin(Model model, int bookId){
+        model.addAttribute("bookId",bookId);
+        model.addAttribute("title", "Checkin book");
+
+        return "books/checkin";
+    }
+
+    @PostMapping("checkin") //http://localhost:8080/books/checkout?bookId=xxxx
+    public String processCheckin(@RequestParam(required = true) Integer bookId, @RequestParam(required = true) Integer studentId) {
+        Optional<Book> result = bookRepository.findById(bookId);
+        Book book = result.get();
+        BookCheckout bookCheckout=bookCheckoutRepository.findByBookIdAndStudentIdAndIsCheckout(bookId,studentId,true);
+        bookCheckout.setCheckout(false);
+        bookCheckout.setActualReturnDate(new Date());
+        int availableCopies = book.getAvailableCopiesToIssue();
+        availableCopies++;
+        bookCheckoutRepository.save(bookCheckout);
+        book.setAvailableCopiesToIssue(availableCopies);
+        bookRepository.save(book);
         return "redirect:";
     }
 
