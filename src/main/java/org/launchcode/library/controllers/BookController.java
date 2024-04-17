@@ -71,8 +71,7 @@ public class BookController {
         return "books/index";
     }
 
-    //Anitha's code for search book
-
+    //Anitha's code to view searched book
     @GetMapping("/books/view/{bookId}")
     public String viewBook(@PathVariable("bookId")String bookId,Model model) {
 
@@ -93,8 +92,7 @@ public class BookController {
         return "books/add";
     }
 
-    //need to change the route to different spring wont able same route for get and post .
-    @PostMapping("/add/save")  //http://localhost:8080/books/add
+    @PostMapping("/add")  //http://localhost:8080/books/add
     public String processAddBookForm(@ModelAttribute @Valid Book newBook,
                                          Errors errors, Model model) {
 
@@ -103,10 +101,10 @@ public class BookController {
         }
         newBook.setAvailableCopiesToIssue(newBook.getCopies());
         bookRepository.save(newBook);
-        //return "redirect:";
+        return "redirect:";
 
         //added redirect route to success message
-        return "redirect:/books/add?success";
+       // return "redirect:/books/add?success";
     }
     @GetMapping("/update") //http://localhost:8080/books/update?bookId=xx
     public String displayUpdateBookForm(@RequestParam Integer bookId, Model model){
@@ -119,12 +117,11 @@ public class BookController {
 
         return "books/update";
     }
-    @PostMapping("/update/save") //http://localhost:8080/books/update
+
+    @PostMapping("/update") //http://localhost:8080/books/update
     public String processUpdateBookForm(@ModelAttribute @Valid Book book,@ModelAttribute @Valid BooksInventory booksInventory,
                                     Errors errors,
                                     Model model) {
-
-
         if (!errors.hasErrors()) {
 
             if(booksInventory.getBooksToAdd()>0) {
@@ -167,8 +164,6 @@ public class BookController {
         return "books/delete";
     }
 
-
-
     @PostMapping("deletebooks") //http://localhost:8080/books/delete
     public String processDeleteBooks(@RequestParam(required = false) Integer[] bookIds) {
 
@@ -177,7 +172,6 @@ public class BookController {
                 bookRepository.deleteById(id);
             }
         }
-
         return "redirect:";
     }
     @GetMapping("delete") //http://localhost:8080/books/delete?bookId=xx
@@ -197,8 +191,6 @@ public class BookController {
 
             bookRepository.deleteById(bookId);
         }
-
-
         return "redirect:";
     }
     @GetMapping("checkout") //http://localhost:8080/books/checkout

@@ -48,7 +48,7 @@ public class AuthenticationController {
     @GetMapping("/landing")
     public String landing() {
         return "user/homepage";
-    }
+    }//need to change to megha landing page.
 
     // handler method to handle user registration form request
 
