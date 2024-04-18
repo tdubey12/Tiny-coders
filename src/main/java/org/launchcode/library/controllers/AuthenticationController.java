@@ -46,9 +46,12 @@ public class AuthenticationController {
     // handler method to handle landing page request
 
     @GetMapping("/landing")
+   // public String landing() {
+   //     return "user/homepage";
+   // }
     public String landing() {
-        return "user/homepage";
-    }
+         return "user/index";
+     }
 
     // handler method to handle user registration form request
 
