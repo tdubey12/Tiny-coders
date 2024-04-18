@@ -8,13 +8,15 @@ import jakarta.validation.constraints.Size;
 @Entity
 public class Student extends AbstractEntity {
 
-    @NotBlank(message = "Name is required")
-    @Size(min = 3, max=50, message = "Name must be between 3 and 50 characters")
+    @NotBlank(message = "First Name is required")
+    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
     private String firstname;
-    @Size(max = 500, message = "Description too long")
+
+    @NotBlank(message = "Last Name is required")
+    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
     private String lastname;
 
-    @NotBlank (message = "Email is required")
+    @NotBlank(message = "Email is required")
     @Email(message = "Invalid email, try again")
     private String contactEmail;
 
@@ -24,7 +26,7 @@ public class Student extends AbstractEntity {
         this.contactEmail = contactEmail;
     }
 
-    public Student () {
+    public Student() {
 
     }
 
@@ -60,3 +62,4 @@ public class Student extends AbstractEntity {
                 '}';
     }
 }
+

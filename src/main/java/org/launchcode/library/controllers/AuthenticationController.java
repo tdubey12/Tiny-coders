@@ -52,7 +52,6 @@ public class AuthenticationController {
     public String landing() {
          return "user/index";
      }
-
     // handler method to handle user registration form request
 
     @GetMapping("/register")
