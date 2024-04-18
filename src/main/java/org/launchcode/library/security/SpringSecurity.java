@@ -51,13 +51,19 @@ public class SpringSecurity {
                                         .requestMatchers("/students/add/**").hasRole("ADMIN")
                                         .requestMatchers("/students/delete/**").hasRole("ADMIN")
                                         .requestMatchers("/students/update/**").hasRole("ADMIN")
-                        // for all API related URLs
-
+                                        // Booksinfo permissions
+                                        .requestMatchers("/booksinfo/**").permitAll()
+                                        .requestMatchers("/booksinfo/detail/**").permitAll()
+                                        .requestMatchers("/booksinfo/search/**").permitAll()
+                                        .requestMatchers("/booksinfo/detail/**").permitAll()
+                                        .requestMatchers("/booksinfo/add/**").permitAll()
+                                        .requestMatchers("/booksinfo/delete/**").permitAll()
+                                        .requestMatchers("/booksinfo/update/**").permitAll()
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
                                 .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/landing")
+                                .defaultSuccessUrl("/index")
                                 .permitAll()
                 ).logout(
                         logout -> logout
