@@ -25,46 +25,34 @@ public class SpringSecurity {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()
                 .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers("/register/**").permitAll()
-                                .requestMatchers("/index").permitAll()
-                                .requestMatchers("/library").permitAll()
-                                //.requestMatchers("/landing").hasRole("ADMIN")
-                                //for all books related URLs
-                                /*.requestMatchers("/books/**").hasRole("ADMIN")
-                                .requestMatchers("/books/search/**").hasRole("ADMIN")
-                                .requestMatchers("/books/detail/**").hasRole("ADMIN")
-                                .requestMatchers("/books/add/**").hasRole("ADMIN")
-                                .requestMatchers("/books/update/**").hasRole("ADMIN")
-                                .requestMatchers("/books/delete/**").hasRole("ADMIN")
-                                .requestMatchers("/books/checkout/**").hasRole("ADMIN")
-                                .requestMatchers("/books/hold/**").hasRole("ADMIN")
-                                .requestMatchers("/books/checkin/**").hasRole("ADMIN")*/
-                                //.requestMatchers("/books/view/**").hasRole("ADMIN")
-                                // for all student related URLs
-                                /*.requestMatchers("/students/**").hasRole("ADMIN")
-                                .requestMatchers("/students/search/**").hasRole("ADMIN")
-                                .requestMatchers("/students/detail/**").hasRole("ADMIN")
-                                .requestMatchers("/students/add/**").hasRole("ADMIN")
-                                .requestMatchers("/students/delete/**").hasRole("ADMIN")
-                                .requestMatchers("/students/update/**").hasRole("ADMIN")*/
-                                .requestMatchers("/landing").permitAll()
-                                .requestMatchers("/students/**").permitAll()
-                                .requestMatchers("/students/detail/**").permitAll()
-                                .requestMatchers("/students/search/**").permitAll()
-                                .requestMatchers("/students/detail/**").permitAll()
-                                .requestMatchers("/students/add/**").permitAll()
-                                .requestMatchers("/students/delete/**").permitAll()
-                                .requestMatchers("/students/update/**").permitAll()
-                            // Booksinfo permissions
-                                .requestMatchers("/booksinfo/**").permitAll()
-                                .requestMatchers("/booksinfo/detail/**").permitAll()
-                                .requestMatchers("/booksinfo/search/**").permitAll()
-                                .requestMatchers("/booksinfo/detail/**").permitAll()
-                                .requestMatchers("/booksinfo/add/**").permitAll()
-                                .requestMatchers("/booksinfo/delete/**").permitAll()
-                                .requestMatchers("/booksinfo/update/**").permitAll()
+                                authorize.requestMatchers("/register/**").permitAll()
+                                        .requestMatchers("/index").permitAll()
+                                        .requestMatchers("/library").permitAll()
+                                        .requestMatchers("/landing").hasRole("ADMIN")
+                                        //for all books related URLs
+                                        .requestMatchers("/books/**").hasRole("ADMIN")
+                                        .requestMatchers("/books/hold").hasRole("ADMIN")
+                                        .requestMatchers("/books/search/**").hasRole("ADMIN")
+                                        .requestMatchers("/books/detail/**").hasRole("ADMIN")
+                                        .requestMatchers("/books/add/**").hasRole("ADMIN")
+                                        .requestMatchers("/books/update/**").hasRole("ADMIN")
+                                        .requestMatchers("/books/delete/**").hasRole("ADMIN")
+                                        .requestMatchers("/books/checkout/**").hasRole("ADMIN")
+                                        .requestMatchers("/books/checkin/**").hasRole("ADMIN")
+                                        .requestMatchers("/books/view/**").hasRole("ADMIN")
+                                        // for all student related URLs
+                                        .requestMatchers("/landing").hasRole("ADMIN")
+                                        .requestMatchers("/students/**").hasRole("ADMIN")
+                                        .requestMatchers("/students/detail/**").hasRole("ADMIN")
+                                        .requestMatchers("/students/search/**").hasRole("ADMIN")
+                                        .requestMatchers("/students/detail/**").hasRole("ADMIN")
+                                        .requestMatchers("/students/add/**").hasRole("ADMIN")
+                                        .requestMatchers("/students/delete/**").hasRole("ADMIN")
+                                        .requestMatchers("/students/update/**").hasRole("ADMIN")
+                        // for all API related URLs
+
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
@@ -80,7 +68,6 @@ public class SpringSecurity {
     }
 
     // setup UserDetailService, password encoder to build memory by AuthenticationManager.
-
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth

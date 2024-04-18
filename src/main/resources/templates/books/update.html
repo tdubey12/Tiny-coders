@@ -14,7 +14,7 @@
     </div>
 </div>
 <!--/* action is missing so added action */-->
-<form method="post" th:action="@{/books/update/save}" >
+<form method="post" th:action="@{/books/update}" >
     <div class="form-group">
         <input th:field="${book.id}" type="hidden" class="form-control"/>
         <input th:field="${book.availableCopiesToIssue}" type="hidden" class="form-control"/>
