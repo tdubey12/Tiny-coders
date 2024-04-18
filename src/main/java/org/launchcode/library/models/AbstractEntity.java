@@ -1,29 +1,16 @@
 package org.launchcode.library.models;
 
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 import java.util.Objects;
+
 @MappedSuperclass
 public abstract class AbstractEntity {
-
     @Id
     @GeneratedValue
     private int id;
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-
-
 
     @Override
     public boolean equals(Object o) {
@@ -32,11 +19,15 @@ public abstract class AbstractEntity {
         AbstractEntity entity = (AbstractEntity) o;
         return id == entity.id;
     }
+    public int getId() {
+        return id;
+    }
 
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
+
 
 
 }

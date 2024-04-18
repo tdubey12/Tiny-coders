@@ -32,7 +32,7 @@ public class SpringSecurity {
                                 .requestMatchers("/library").permitAll()
                                 //.requestMatchers("/landing").hasRole("ADMIN")
                                 //for all books related URLs
-                                .requestMatchers("/books/**").hasRole("ADMIN")
+                                /*.requestMatchers("/books/**").hasRole("ADMIN")
                                 .requestMatchers("/books/search/**").hasRole("ADMIN")
                                 .requestMatchers("/books/detail/**").hasRole("ADMIN")
                                 .requestMatchers("/books/add/**").hasRole("ADMIN")
@@ -40,7 +40,7 @@ public class SpringSecurity {
                                 .requestMatchers("/books/delete/**").hasRole("ADMIN")
                                 .requestMatchers("/books/checkout/**").hasRole("ADMIN")
                                 .requestMatchers("/books/hold/**").hasRole("ADMIN")
-                                .requestMatchers("/books/checkin/**").hasRole("ADMIN")
+                                .requestMatchers("/books/checkin/**").hasRole("ADMIN")*/
                                 //.requestMatchers("/books/view/**").hasRole("ADMIN")
                                 // for all student related URLs
                                 /*.requestMatchers("/students/**").hasRole("ADMIN")
@@ -57,6 +57,14 @@ public class SpringSecurity {
                                 .requestMatchers("/students/add/**").permitAll()
                                 .requestMatchers("/students/delete/**").permitAll()
                                 .requestMatchers("/students/update/**").permitAll()
+                            // Booksinfo permissions
+                                .requestMatchers("/booksinfo/**").permitAll()
+                                .requestMatchers("/booksinfo/detail/**").permitAll()
+                                .requestMatchers("/booksinfo/search/**").permitAll()
+                                .requestMatchers("/booksinfo/detail/**").permitAll()
+                                .requestMatchers("/booksinfo/add/**").permitAll()
+                                .requestMatchers("/booksinfo/delete/**").permitAll()
+                                .requestMatchers("/booksinfo/update/**").permitAll()
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
