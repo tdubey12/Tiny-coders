@@ -1,7 +1,7 @@
 package org.launchcode.library.controllers;
 
 import jakarta.validation.Valid;
-import org.launchcode.library.data.BookinfoRepository;
+import org.launchcode.library.models.data.BookinfoRepository;
 import org.launchcode.library.models.Bookinfo;
 import org.launchcode.library.models.GoogleBookItem;
 import org.launchcode.library.models.GoogleBooksResponse;
@@ -11,8 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("booksinfo")

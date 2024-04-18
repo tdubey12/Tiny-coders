@@ -1,8 +1,8 @@
 package org.launchcode.library.controllers;
 
 import jakarta.validation.Valid;
-import org.launchcode.library.data.RoleRepository;
-import org.launchcode.library.data.UserRepository;
+import org.launchcode.library.models.data.RoleRepository;
+import org.launchcode.library.models.data.UserRepository;
 import org.launchcode.library.models.Role;
 import org.launchcode.library.models.User;
 import org.launchcode.library.models.dto.UserDto;

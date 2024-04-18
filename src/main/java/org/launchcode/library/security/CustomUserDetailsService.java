@@ -1,6 +1,6 @@
 package org.launchcode.library.security;
 
-import org.launchcode.library.data.UserRepository;
+import org.launchcode.library.models.data.UserRepository;
 import org.launchcode.library.models.Role;
 import org.launchcode.library.models.User;
 import org.springframework.security.core.GrantedAuthority;

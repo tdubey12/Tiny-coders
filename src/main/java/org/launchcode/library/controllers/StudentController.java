@@ -1,18 +1,15 @@
 package org.launchcode.library.controllers;
 
 import jakarta.validation.Valid;
-import org.launchcode.library.data.StudentRepository;
 import org.launchcode.library.models.Student;
+import org.launchcode.library.models.data.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
-
-import static org.launchcode.library.controllers.ListController.columnChoices;
 
 @Controller
 @RequestMapping ("students")

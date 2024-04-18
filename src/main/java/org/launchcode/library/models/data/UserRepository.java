@@ -1,4 +1,4 @@
-package org.launchcode.library.data;
+package org.launchcode.library.models.data;
 
 import org.launchcode.library.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
