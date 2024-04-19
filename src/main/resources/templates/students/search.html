@@ -5,36 +5,47 @@
 
 <header th:replace="fragments :: header2"></header>
 
-<!--div class="container body-content"-->
-
    <!--h1 th:text="${#strings.capitalizeWords(title)}"></h1-->
-
-   <form th:action="@{/students/search/update}" method = "post">
-      <h2>Search by:</h2>
-
-      <p>
-            <span th:each="column : ${columns}">
+<form th:action="@{/students/search/results}" method = "post">
+    <h2>Search Student by:</h2>
+    <p>
+            <span th:each="column : ${studentSearchOptions}">
                 <input
                         type="radio"
                         name="searchType"
                         th:id="${column.key}"
                         th:value="${column.key}"
-                        th:checked="${column.key == 'all'}"/>
+                        th:checked="${column.key == searchType}"/>
                 <label th:for="${column.key}" th:text="${column.value}"></label>
             </span>
+    </p>
 
-      </p>
+    <p>
+        <label for="searchTerm">Keyword:</label>
+        <input type="text" name="searchTerm" id="searchTerm" th:value="${searchTerm}"/>
+    </p>
+    <input type="submit" value="Search" />
+</form>
+<hr />
+<div class="container">
+    <table class="table table-striped">
+        <tr>
+            <th>Student First Name</th>
+            <th>Student Last Name</th>
+            <th>Student Email</th>
+        </tr>
+    </table>
+    <table class="table table-striped">
+        <tr class="table-danger" th:each="student : ${students}">
+            <td class="table-success">
+                <p th:text="${student.firstname}"></p></td>
+            <td class="table-success">
+                <p th:text="${student.lastname}"></p></td>
+            <td class="table-success">
+                <p th:text="${student.contactEmail}"></p>
 
-      <p>
-         <label th:for="${searchTerm}">Keyword:</label>
-         <input th:type="text" name="searchTerm" value="" />
-      </p>
-
-      <input type="submit" value="Search" />
-   </form>
-<p th:text="${error}" class="error"></p>
-
-   <hr />
-
-</body>
-</html>
+                <!--<a th:href="@{'/students/detail/' + ${student.id}}"th:text="${student.contactEmail}"></a>-->
+            </td>
+        </tr>
+    </table>
+</div>
