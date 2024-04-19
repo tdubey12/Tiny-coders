@@ -30,6 +30,7 @@ public class SpringSecurity {
                                 authorize.requestMatchers("/register/**").permitAll()
                                         .requestMatchers("/index").permitAll()
                                         .requestMatchers("/library").permitAll()
+                                        .requestMatchers("/styles.css").permitAll()
                                         .requestMatchers("/landing").hasRole("ADMIN")
                                         //for all books related URLs
                                         .requestMatchers("/books/**").hasRole("ADMIN")
@@ -47,18 +48,17 @@ public class SpringSecurity {
                                         .requestMatchers("/students/**").hasRole("ADMIN")
                                         .requestMatchers("/students/detail/**").hasRole("ADMIN")
                                         .requestMatchers("/students/search/**").hasRole("ADMIN")
-                                        .requestMatchers("/students/detail/**").hasRole("ADMIN")
                                         .requestMatchers("/students/add/**").hasRole("ADMIN")
                                         .requestMatchers("/students/delete/**").hasRole("ADMIN")
                                         .requestMatchers("/students/update/**").hasRole("ADMIN")
-                                        // Booksinfo permissions
-                                        .requestMatchers("/booksinfo/**").permitAll()
-                                        .requestMatchers("/booksinfo/detail/**").permitAll()
-                                        .requestMatchers("/booksinfo/search/**").permitAll()
-                                        .requestMatchers("/booksinfo/detail/**").permitAll()
-                                        .requestMatchers("/booksinfo/add/**").permitAll()
-                                        .requestMatchers("/booksinfo/delete/**").permitAll()
-                                        .requestMatchers("/booksinfo/update/**").permitAll()
+                                        // for all Booksinfo related URLs
+                                        .requestMatchers("/booksinfo/**").hasRole("ADMIN")
+                                        .requestMatchers("/booksinfo/detail/**").hasRole("ADMIN")
+                                        .requestMatchers("/booksinfo/search/**").hasRole("ADMIN")
+                                        .requestMatchers("/booksinfo/detail/**").hasRole("ADMIN")
+                                        .requestMatchers("/booksinfo/add/**").hasRole("ADMIN")
+                                        .requestMatchers("/booksinfo/delete/**").hasRole("ADMIN")
+                                        .requestMatchers("/booksinfo/update/**").hasRole("ADMIN")
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")

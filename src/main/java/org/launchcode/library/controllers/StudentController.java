@@ -2,6 +2,7 @@ package org.launchcode.library.controllers;
 
 import jakarta.validation.Valid;
 import org.launchcode.library.models.Student;
+import org.launchcode.library.models.StudentData;
 import org.launchcode.library.models.data.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 
 @Controller
@@ -18,11 +21,25 @@ public class StudentController {
     @Autowired
     private StudentRepository studentRepository;
 
-    @GetMapping
+    //Anitha code for search students
+
+    static HashMap<String, String> studentSearchOptions = new HashMap<>();
+
+    public StudentController() {
+        studentSearchOptions.put("all", "All");
+        studentSearchOptions.put("email", "Email");
+        studentSearchOptions.put("lastname", "Student Last Name");
+        studentSearchOptions.put("firstname", "Student First Name");
+
+    }
+
+    @GetMapping("/")
     public String displayAllStudents(@RequestParam(required=false) Integer studentId, Model model) {
         model.addAttribute("title", "Student Management");
         Iterable<Student> students;
         if (studentId == null) {
+            //added searchOptions
+            model.addAttribute("studentSearchOptions", studentSearchOptions);
             students = studentRepository.findAll();
             model.addAttribute("students", students);
             return "students/index";
@@ -38,6 +55,37 @@ public class StudentController {
             return "students/update";
             }
     }
+
+    //Anitha code for Student search 57 to 87
+    @GetMapping ("/search")
+    public String displaySearchStudentForm (Model model){
+        model.addAttribute("studentSearchOptions", studentSearchOptions);
+        model.addAttribute("students", studentRepository.findAll());
+        return "students/search";
+    }
+    //Anitha code for Student search
+    @PostMapping ("/search/results")
+    public String processSearchStudent(Model model, @RequestParam String searchType, @RequestParam String searchTerm){
+        Iterable<Student> students;
+        ArrayList<Student> tempStudents = (ArrayList<Student>) studentRepository.findAll();
+        students = StudentData.findByColumnAndValue(searchType, searchTerm, studentRepository.findAll());
+        model.addAttribute("studentSearchOptions", studentSearchOptions);
+        model.addAttribute("searchType",searchType);
+        model.addAttribute("searchTerm",searchTerm);
+        model.addAttribute("students",students);
+        model.addAttribute("title", "Students with " + studentSearchOptions.get(searchType) + ": " + searchTerm);
+        return "students/search";
+    }
+    //Anitha code for Student search
+    /*@GetMapping("/detail/{studentId}")
+    public String viewStudent(@PathVariable("studentId")String studentId,Model model) {
+        Optional<Student> student = studentRepository.findById(Integer.valueOf(studentId));
+        if(student.isPresent()){
+            Student selectedStudent = student.get();
+            model.addAttribute("student", selectedStudent);
+        }//else throw error
+        return "students/view";
+    }*/
 
 
     @GetMapping("add")
@@ -56,7 +104,8 @@ public class StudentController {
             return "students/add";
         }
         studentRepository.save(newStudent);
-        return "redirect:/students";
+        return "redirect:";
+        //return "redirect:/students";
 
     }
 
@@ -75,7 +124,8 @@ public class StudentController {
                 studentRepository.deleteById(id);
             }
         }
-        return "redirect:/students";
+        //return "redirect:/students";
+        return "redirect:";
 
     }
 

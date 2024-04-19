@@ -70,6 +70,7 @@ public class BookinfoController {
 
 @RequestMapping ("search")
 public String renderBookApi (Model model) {
+
         return "booksinfo/search";
 }
 
