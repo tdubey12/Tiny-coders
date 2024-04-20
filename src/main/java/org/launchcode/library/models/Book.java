@@ -39,7 +39,7 @@ public class Book extends AbstractEntity{
     @JoinColumn(name="book_id")
     private List<BookCheckout> bookCheckouts = new ArrayList<>();
 
-        public int getAvailableCopiesToIssue() {
+    public int getAvailableCopiesToIssue() {
         return availableCopiesToIssue;
     }
 
