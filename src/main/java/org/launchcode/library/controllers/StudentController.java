@@ -97,7 +97,7 @@ public class StudentController {
         }
         studentRepository.save(newStudent);
         //return "redirect:";
-        return "redirect:/students";
+        return "redirect:/students/";
 
     }
 
