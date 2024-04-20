@@ -33,7 +33,7 @@ public class StudentController {
 
     }
 
-    @GetMapping("/")
+    @GetMapping
     public String displayAllStudents(@RequestParam(required=false) Integer studentId, Model model) {
         model.addAttribute("title", "Student Management");
         Iterable<Student> students;
@@ -104,8 +104,8 @@ public class StudentController {
             return "students/add";
         }
         studentRepository.save(newStudent);
-        return "redirect:";
-        //return "redirect:/students";
+        //return "redirect:";
+        return "redirect:/students";
 
     }
 
@@ -124,8 +124,8 @@ public class StudentController {
                 studentRepository.deleteById(id);
             }
         }
-        //return "redirect:/students";
-        return "redirect:";
+        return "redirect:/students";
+        //return "redirect:";
 
     }
 

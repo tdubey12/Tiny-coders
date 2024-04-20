@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
 <body class="container">
-
+<header th:replace="~{toolbar :: header}"></header>
 <header th:replace="fragments :: header2"></header>
 
    <!--h1 th:text="${#strings.capitalizeWords(title)}"></h1-->
@@ -30,6 +30,7 @@
 <div class="container">
     <table class="table table-striped">
         <tr>
+            <th>Student ID</th>
             <th>Student First Name</th>
             <th>Student Last Name</th>
             <th>Student Email</th>
@@ -37,6 +38,8 @@
     </table>
     <table class="table table-striped">
         <tr class="table-danger" th:each="student : ${students}">
+            <td class="table-success">
+                <a th:text="${student.id}" th:href="'/students?studentId=' + ${student.id}"></a></td>
             <td class="table-success">
                 <p th:text="${student.firstname}"></p></td>
             <td class="table-success">
