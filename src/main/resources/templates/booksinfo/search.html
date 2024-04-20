@@ -14,12 +14,18 @@
 </form>
 
 <body>
-<ul>
-    <li th:each="book : ${books}">
+
+
+    <table class="table table-striped">
+    <tr th:each="book : ${books}">
+        <table class="table table-striped">
         <!--h1 th:text="${book.volumeInfo.Imagelink.thumbnail}"></h1-->
         <!--img th:src="${book.volumeInfo.ImageLinks.getSmallthumbnail}" alt="Thumbnail"-->
-        <h2 th:text="${book.volumeInfo.title}"></h2>
-        <td>
+        <thead class="thead-dark">
+            <h2 th:text="${book.volumeInfo.title}" class="bold"></h2>
+        </thead>
+            <tbody>
+            <td>
             <h6>Author Name : </h6>
             <span th:each="author : ${book.volumeInfo.authors}">
                 <p th:text="${author}"></p>
@@ -31,12 +37,19 @@
                 <p th:text="${categories}"></p>
             </span>
         </td>
+            <body th:class="light">
         <p th:text="${book.volumeInfo.description}"></p>
         <p th:text="${book.volumeInfo.mainCategory}"></p>
         <h6> Book Rating: </h6>
         <p th:text="${book.volumeInfo.averageRating}"></p>
-    </li>
-</ul>
+            </body>
+            </tbody>
+
+        </table>
+    </tr>
+    </table>
+
+
 </body>
 </body>
 </html>

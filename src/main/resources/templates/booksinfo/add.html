@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
+<link rel="stylesheet" th:href="@{/styles.css}">
 <body class="container">
 <header th:replace="~{toolbar :: header}"></header>
 <header th:replace="fragments :: header3"></header>
-<form th:action="@{/booksinfo/delete}" method="post">
+<form th:action="@{/booksinfo/add}" method="post">
    <div class="form-group">
       <label> Book Name
          <input th:field="${bookinfo.bookname}" class="form-control">
