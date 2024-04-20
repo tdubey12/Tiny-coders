@@ -90,7 +90,7 @@ public String renderBookApi (Model model) {
         GoogleBookItem[] answer;
         answer = response.getItems();
         answer[0].getVolumeInfo().getAuthors();
-        answer[0].getVolumeInfo().getImagelinks();
+        answer[0].getVolumeInfo().getImagelinks().getSmallThumbnail();
         model.addAttribute("books", response.getItems());
       //  model.addAttribute("author", response.volumeInfo.author)
         return "booksinfo/search"; // Thymeleaf template name

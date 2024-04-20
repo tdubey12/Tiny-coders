@@ -17,7 +17,7 @@
 <ul>
     <li th:each="book : ${books}">
         <!--h1 th:text="${book.volumeInfo.Imagelink.thumbnail}"></h1-->
-        <img th:src="${book.volumeInfo.imageLinks.thumbnail}" alt="Thumbnail">
+        <!--img th:src="${book.volumeInfo.ImageLinks.getSmallthumbnail}" alt="Thumbnail"-->
         <h2 th:text="${book.volumeInfo.title}"></h2>
         <td>
             <h6>Author Name : </h6>
