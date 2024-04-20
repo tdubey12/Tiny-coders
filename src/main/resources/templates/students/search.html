@@ -38,13 +38,11 @@
     <table class="table table-striped">
         <tr class="table-danger" th:each="student : ${students}">
             <td class="table-success">
-                <p th:text="${student.firstname}"></p></td>
+            <a th:text="${student.firstname}" th:href="'/students/update?studentId=' + ${student.id}"></a></td>
             <td class="table-success">
                 <p th:text="${student.lastname}"></p></td>
             <td class="table-success">
                 <p th:text="${student.contactEmail}"></p>
-
-                <!--<a th:href="@{'/students/detail/' + ${student.id}}"th:text="${student.contactEmail}"></a>-->
             </td>
         </tr>
     </table>
