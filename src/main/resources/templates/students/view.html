@@ -10,6 +10,11 @@
 <body>
 <div class="job-listing">
     <p>
+        Student ID:
+    <p th:text="${student.id}" th:href="'/students?studentId=' + ${student.id}"></p>
+    </p>
+
+    <p>
         Student First Name:
     <p th:text="${student.firstname}"></p>
     </p>

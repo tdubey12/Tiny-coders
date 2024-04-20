@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
 <body class="container">
-
+<header th:replace="~{toolbar :: header}"></header>
 <header th:replace="fragments :: header3"></header>
 
 <form th:action="@{/booksinfo/delete}" method="post">
