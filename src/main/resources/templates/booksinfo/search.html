@@ -19,8 +19,11 @@
     <table class="table table-striped">
     <tr th:each="book : ${books}">
         <table class="table table-striped">
-        <!--h1 th:text="${book.volumeInfo.Imagelink.thumbnail}"></h1-->
-        <!--img th:src="${book.volumeInfo.ImageLinks.getSmallthumbnail}" alt="Thumbnail"-->
+            <div>
+                <!--img th:if="${book.volumeInfo != null and book.volumeInfo.imageLinks != null}"
+                th:src="${book.volumeInfo.imageLinks.thumbnail}" alt="Thumbnail"-->
+                <!--img th:src="${book.volumeInfo.imageLinks.thumbnail}" alt="Thumbnail"-->
+            </div>
         <thead class="thead-dark">
             <h2 th:text="${book.volumeInfo.title}" class="bold"></h2>
         </thead>
