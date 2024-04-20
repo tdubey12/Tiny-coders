@@ -2,7 +2,9 @@ package org.launchcode.library.controllers;
 
 import jakarta.validation.Valid;
 import org.launchcode.library.models.Student;
+import org.launchcode.library.models.StudentBook;
 import org.launchcode.library.models.StudentData;
+import org.launchcode.library.models.data.StudentBookRepository;
 import org.launchcode.library.models.data.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,9 @@ public class StudentController {
     @Autowired
     private StudentRepository studentRepository;
 
+    @Autowired
+    private StudentBookRepository studentBookRepository;
+
     //Anitha code for search students
 
     static HashMap<String, String> studentSearchOptions = new HashMap<>();
@@ -32,31 +37,18 @@ public class StudentController {
         studentSearchOptions.put("firstname", "Student First Name");
 
     }
-
-    @GetMapping
+    //index page
+    @GetMapping("/")
     public String displayAllStudents(@RequestParam(required=false) Integer studentId, Model model) {
         model.addAttribute("title", "Student Management");
         Iterable<Student> students;
-        if (studentId == null) {
-            //added searchOptions
-            model.addAttribute("studentSearchOptions", studentSearchOptions);
-            students = studentRepository.findAll();
-            model.addAttribute("students", students);
-            return "students/index";
-        } else {
-            Optional<Student> optionalStudent = studentRepository.findById(studentId);
-            Student student = optionalStudent.get();
-    //        model.addAttribute("students1", student);
-            model.addAttribute("studentId", student.getId());
-            model.addAttribute("studentfirstname", student.getFirstname());
-            model.addAttribute("studentlastname", student.getLastname());
-            model.addAttribute("studentcontactemail", student.getContactEmail());
-    //        return "students/index";
-            return "students/update";
-            }
+        model.addAttribute("studentSearchOptions", studentSearchOptions);
+        students = studentRepository.findAll();
+        model.addAttribute("students", students);
+        return "students/index";
     }
 
-    //Anitha code for Student search 57 to 87
+    //Anitha code for Student search.
     @GetMapping ("/search")
     public String displaySearchStudentForm (Model model){
         model.addAttribute("studentSearchOptions", studentSearchOptions);
@@ -87,7 +79,7 @@ public class StudentController {
         return "students/view";
     }*/
 
-
+    //add student
     @GetMapping("add")
     public String renderCreateStudentForm(Model model){
         model.addAttribute("title", "Create Student");
@@ -109,6 +101,7 @@ public class StudentController {
 
     }
 
+    //delete student
     @GetMapping ("delete")
     public String displayDeleteStudentForm (Model model){
         model.addAttribute("title", "Delete Student");
@@ -121,12 +114,37 @@ public class StudentController {
         if (StudentIds != null)
         {
             for (int id : StudentIds) {
+                //remove the hold before deleting student
+                removeHold(id);
                 studentRepository.deleteById(id);
             }
         }
-        return "redirect:/students";
+        return "redirect:/students/";
         //return "redirect:";
 
+    }
+    //update student
+    @GetMapping("update")
+    public String updateStudent(@RequestParam(required=false) Integer studentId, Model model) {
+        model.addAttribute("title", "Student Management");
+        Iterable<Student> students;
+        if (studentId == null) {
+            //added searchOptions
+            model.addAttribute("studentSearchOptions", studentSearchOptions);
+            students = studentRepository.findAll();
+            model.addAttribute("students", students);
+            return "students/index";
+        } else {
+            Optional<Student> optionalStudent = studentRepository.findById(studentId);
+            Student student = optionalStudent.get();
+            //        model.addAttribute("students1", student);
+            model.addAttribute("studentId", student.getId());
+            model.addAttribute("studentfirstname", student.getFirstname());
+            model.addAttribute("studentlastname", student.getLastname());
+            model.addAttribute("studentcontactemail", student.getContactEmail());
+            //        return "students/index";
+            return "students/update";
+        }
     }
 
     @PostMapping ("update")
@@ -147,10 +165,9 @@ public class StudentController {
             studentRepository.save(student);
             studentId = null;
 
-            return "redirect:/students";
+            return "redirect:/students/";
         }
     }
-
     @PostMapping ("add/view")
     public String processViewStudent(@RequestParam(required = false) int[] studentId, Model model){
         if (studentId != null)
@@ -160,6 +177,17 @@ public class StudentController {
             }
         }
         return "students/search";
+
+    }
+
+    //remove the hold before deleting student
+    private void removeHold(int studentId){
+        Iterable<StudentBook> studentBookList = studentBookRepository.findAll();
+        for (StudentBook studentBook : studentBookList){
+            if(studentBook.getStudent().getId() == studentId){
+                studentBookRepository.delete(studentBook);
+            }
+        }
 
     }
 }
