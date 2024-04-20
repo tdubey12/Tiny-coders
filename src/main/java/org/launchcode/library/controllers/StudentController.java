@@ -180,7 +180,7 @@ public class StudentController {
 
     }
 
-    //remove the hold before deleting student
+    //Anitha:remove the hold before deleting student
     private void removeHold(int studentId){
         Iterable<StudentBook> studentBookList = studentBookRepository.findAll();
         for (StudentBook studentBook : studentBookList){
