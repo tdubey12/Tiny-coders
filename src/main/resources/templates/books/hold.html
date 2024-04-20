@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="~{toolbar :: head}"></head>
-<body>
+<body class="container">
 <header th:replace="~{toolbar :: header}"></header>
 <br />
 <!--header th:replace="fragments :: header"></header-->
@@ -10,7 +10,7 @@
 
 <form  method="post" action="/books/hold">
     <div class="form-group">
-        <label>Book Id
+        <label>Book Name
             <input type="hidden" th:field="${studentBookDto.bookId}" class="form-control">
             <input type="text" th:field="${studentBookDto.bookName}" class="form-control">
         </label>

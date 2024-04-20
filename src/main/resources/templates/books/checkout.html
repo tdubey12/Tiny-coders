@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="~{toolbar :: head}"></head>
-<body>
+<body class="container">
 <header th:replace="~{toolbar :: header}"></header>
 <br />
 
-<header th:replace="~{fragments :: header}"></header>
 
 <p th:text="${errorMsg}" style="color:red;"></p>
 
@@ -18,7 +17,7 @@
             <input name="studentId" type="text" class="form-control" >
         </label>
        <label>Expected Return Date
-            <input type="date" th:field="${bookCheckout.expectedReturnDate}" class="form-control">
+           <input type="date" th:field="${bookCheckout.expectedReturnDate}" th:value="${bookCheckout.expectedReturnDate}" class="form-control">
         </label>
 
     </div>

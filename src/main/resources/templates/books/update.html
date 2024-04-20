@@ -2,7 +2,7 @@
 
 <html xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="~{toolbar :: head}"></head>
-<body>
+<body class="container">
 <header th:replace="~{toolbar :: header}"></header>
 <br />
 <!--header th:replace="fragments :: header"></header-->
@@ -14,7 +14,7 @@
     </div>
 </div>
 <!--/* action is missing so added action */-->
-<form method="post" th:action="@{/books/update}" >
+<form method="post"  >
     <div class="form-group">
         <input th:field="${book.id}" type="hidden" class="form-control"/>
         <input th:field="${book.availableCopiesToIssue}" type="hidden" class="form-control"/>

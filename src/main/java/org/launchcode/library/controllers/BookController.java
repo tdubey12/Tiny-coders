@@ -156,7 +156,7 @@ public class BookController {
         Optional<Book> result = bookRepository.findById(bookId);
         Book book = result.get();
         model.addAttribute(book);
-
+        model.addAttribute("title", "Book Details");
         return "books/detail";
     }
 
@@ -203,7 +203,12 @@ public class BookController {
     //checkout
     @GetMapping("checkout") //http://localhost:8080/books/checkout
     public String displayCheckout(Model model, int bookId){
-        model.addAttribute(new BookCheckout());
+        BookCheckout bookCheckout =new BookCheckout();
+        Calendar c= Calendar.getInstance();
+        c.add(Calendar.DATE, 30);
+        Date date=c.getTime();
+        bookCheckout.setExpectedReturnDate(date);
+        model.addAttribute(bookCheckout);
         model.addAttribute("bookId",bookId);
         model.addAttribute("title", "Checkout book");
         return "books/checkout";
@@ -268,6 +273,7 @@ public class BookController {
         studentBookDto.setBookName(book.getName());
         model.addAttribute("studentBookDto",studentBookDto);
         model.addAttribute("allstudents",studentRepository.findAll());
+        model.addAttribute("title", "Hold Book");
         return "books/hold";
     }
     //Anitha code for hold a book
