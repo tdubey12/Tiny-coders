@@ -46,7 +46,7 @@ public class BookController {
     public String index(Model model) {
         //anitha added booksearchoptions
         model.addAttribute("columns", bookSearchOptions);
-        //model.addAttribute("title", "All Books");
+        model.addAttribute("searchType","all");
         model.addAttribute("books", bookRepository.findAll());
         return "books/index";
     }
@@ -54,7 +54,7 @@ public class BookController {
     @GetMapping("/search")
     public String search(Model model) {
         model.addAttribute("columns", bookSearchOptions);
-        //model.addAttribute("title", "All Books");
+        model.addAttribute("searchType","all");
         model.addAttribute("books", bookRepository.findAll());
         return "books/index";
     }
@@ -66,6 +66,8 @@ public class BookController {
         books = BookData.findByColumnAndValue(searchType, searchTerm, bookRepository.findAll());
         model.addAttribute("columns", bookSearchOptions);
         model.addAttribute("title", "Books with " + bookSearchOptions.get(searchType) + ": " + searchTerm);
+        model.addAttribute("searchType",searchType);
+        model.addAttribute("searchTerm",searchTerm);
         model.addAttribute("books", books);
         return "books/index";
     }
