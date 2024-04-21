@@ -4,7 +4,6 @@
 <head th:replace="~{toolbar :: head}"></head>
 <body class="container">
 <header th:replace="~{toolbar :: header}"></header>
-<br />
 <!--header th:replace="fragments :: header"></header-->
 <p th:text="${errorMsg}" style="color:red;"></p>
 <!--/* This div code need to be added for redirecting the page */-->
@@ -53,22 +52,28 @@
         </label>
         <p class="error" th:errors="${book.genre}"></p>
     </div>
+    <br/>
+    <span  STYLE="font-weight:bold">Manage Inventory</span>
+    <br/>
     <div class="form-group">
-        <label>Copies
+        <label>Number of book copies in library
             <input th:field="${book.copies}" class="form-control" readonly>
         </label>
         <p class="error" th:errors="${book.copies}"></p>
     </div>
+
     <div class="form-group">
-        <label>No of books to add
+        <label>Number of book copies to add to library
             <input th:field="${booksInventory.booksToAdd}" class="form-control" >
         </label>
     </div>
     <div class="form-group">
-        <label>No of books to remove
+        <label>Number of book copies to remove from library
             <input th:field="${booksInventory.booksToRemove}" class="form-control" >
         </label>
     </div>
+    <br/>
+
     <div class="form-group">
         <input type="submit" value="update" class="btn btn-success">
     </div>

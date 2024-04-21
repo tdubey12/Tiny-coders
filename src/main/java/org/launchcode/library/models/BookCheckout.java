@@ -15,12 +15,10 @@ public class BookCheckout {
     @JoinColumn(name="book_id")
     private Book book;
 
-    //private String  bookName;
-    //@ManyToOne
-    //@JoinColumn(name="student_id")
-    private int studentId;
+    @ManyToOne
+    @JoinColumn(name="student_id")
+    private Student student;
 
-    //private String studentName;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date issueDate;
@@ -41,13 +39,7 @@ public class BookCheckout {
     }
 
 
-    public int getStudentId() {
-        return studentId;
-    }
 
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
-    }
 
     public Date getIssueDate() {
         return issueDate;
@@ -87,5 +79,13 @@ public class BookCheckout {
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 }

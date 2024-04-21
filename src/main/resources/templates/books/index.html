@@ -36,6 +36,7 @@
                 <th>Book Name</th>
                 <th>Author Name</th>
                 <th>Genre</th>
+                <th>Available Copies to Issue</th>
                 <th>Action</th>
                 <th>Action</th>
                 <th>Action</th>
@@ -51,6 +52,8 @@
                 <td><p th:text="${book.authorName}"></p>
                 </td>
                 <td><p th:text="${book.genre}"></p>
+                </td>
+                <td text-align="center"><p th:text="${book.availableCopiesToIssue}"></p>
                 </td>
                 <td><p><a th:href="@{'/books/update?bookId=' + ${book.id}}"><button class="btn btn-primary" type="submit">Update</button></a></p></td>
                 <td><p><a th:href="@{'/books/delete?bookId=' + ${book.id}}"><button class="btn btn-primary" type="submit">Delete</button></a></p></td>

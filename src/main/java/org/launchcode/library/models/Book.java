@@ -15,10 +15,10 @@ import java.util.List;
 public class Book extends AbstractEntity{
     //moved name from AbstarctEntity showing error with student name
     @NotBlank(message = "Name is required")
-    @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")
+    @Size(min = 3, max = 100, message = "Name must be between 3 and 100 characters")
     private String name;
 
-    @Size(max = 500, message = "Description too long!")
+    @Size(max = 1000, message = "Description too long!")
     private String description;
 
     @NotBlank(message = "Author Name is required")
