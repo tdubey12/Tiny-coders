@@ -23,6 +23,8 @@
                 <!--img th:if="${book.volumeInfo != null and book.volumeInfo.imageLinks != null}"
                 th:src="${book.volumeInfo.imageLinks.thumbnail}" alt="Thumbnail"-->
                 <!--img th:src="${book.volumeInfo.imageLinks.thumbnail}" alt="Thumbnail"-->
+                <img th:src="${book.volumeInfo.imageLinks !=  null?book.volumeInfo.imageLinks.thumbnail: ''}"
+                     alt="Thumbnail">
             </div>
         <thead class="thead-dark">
             <h2 th:text="${book.volumeInfo.title}" class="bold"></h2>

@@ -55,11 +55,11 @@ public class GoogleBookVolumeInfo {
         this.mainCategory = mainCategory;
     }
 
-    public ImageLinks getImagelinks() {
+    public ImageLinks getImageLinks() {
         return imageLinks;
     }
 
-    public void setImagelinks(ImageLinks imageLinks) {
+    public void setImageLinks(ImageLinks imageLinks) {
         this.imageLinks = imageLinks;
     }
 

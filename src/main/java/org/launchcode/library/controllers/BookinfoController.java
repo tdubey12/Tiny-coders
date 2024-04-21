@@ -91,7 +91,7 @@ public String renderBookApi (Model model) {
         answer = response.getItems();
         answer[0].getVolumeInfo().getAuthors();
    //     String image = answer.getClass();
-        answer[0].getVolumeInfo().getImagelinks().getSmallThumbnail();
+        answer[0].getVolumeInfo().getImageLinks().getSmallThumbnail();
 //        answer[0].getImageLinks().getSmallThumbnail();
         model.addAttribute("books", response.getItems());
       //  model.addAttribute("author", response.volumeInfo.author)
