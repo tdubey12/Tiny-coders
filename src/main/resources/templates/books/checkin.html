@@ -3,8 +3,6 @@
 <head th:replace="~{toolbar :: head}"></head>
 <body class="container">
 <header th:replace="~{toolbar :: header}"></header>
-<br />
-
 <p th:text="${errorMsg}" style="color:red;"></p>
 
 <form  method="post">
@@ -12,10 +10,20 @@
         <label>Book Id
             <input th:value="${bookId}" name="bookId" type="text" class="form-control" readonly>
         </label>
-        <label>Student Id
+        <!--select name="bookId">
+            <option value="">Select Book</option>
+            <option th:each="book : ${allbooks}" th:value="${book.id}" th:text="${book.id}|${book.name}"></option>
+        </select-->
+        <!--label>Student Id
             <input name="studentId" type="text" class="form-control" >
-        </label>
+        </label-->
+        <select name="studentId" required>
+            <option value="" title="ID|First Name">Select Student</option>
+            <option th:each="student : ${allstudents}" th:value="${student.id}" th:text="${student.id}+' | '+${student.firstname}"></option>
+        </select>
     </div>
+    <br/>
+
     <div class="form-group">
         <input type="submit" value="Submit" class="btn btn-success">
     </div>

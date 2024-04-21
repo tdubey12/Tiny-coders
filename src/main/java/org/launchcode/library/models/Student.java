@@ -1,9 +1,14 @@
 package org.launchcode.library.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Student extends AbstractEntity {
@@ -19,6 +24,10 @@ public class Student extends AbstractEntity {
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email, try again")
     private String contactEmail;
+
+    @OneToMany
+    @JoinColumn(name="student_id")
+    private List<BookCheckout> bookCheckouts = new ArrayList<>();
 
     public Student(String firstname, String lastname, String contactEmail) {
         this.firstname = firstname;

@@ -213,6 +213,8 @@ public class BookController {
         model.addAttribute(bookCheckout);
         model.addAttribute("bookId",bookId);
         model.addAttribute("title", "Checkout book");
+        model.addAttribute("allstudents",studentRepository.findAll());
+
         return "books/checkout";
     }
 
@@ -223,11 +225,14 @@ public class BookController {
             return "books/checkout";
         }
         newBookCheckout.setCheckout(true);
-        Optional<Book> result = bookRepository.findById(bookId);
-        Book book = result.get();
+        Optional<Book> resultBook = bookRepository.findById(bookId);
+        Book book = resultBook.get();
         newBookCheckout.setBook(book);
         //student code later
-        newBookCheckout.setStudentId(studentId);
+        Optional<Student> resultStudent = studentRepository.findById(studentId);
+        Student student = resultStudent.get();
+        newBookCheckout.setStudent(student);
+        //newBookCheckout.setStudentId(studentId);
         newBookCheckout.setIssueDate(new Date());
         int availableCopies = book.getAvailableCopiesToIssue();
         availableCopies--;
@@ -242,14 +247,26 @@ public class BookController {
     public String displayCheckin(Model model, int bookId){
         model.addAttribute("bookId",bookId);
         model.addAttribute("title", "Checkin book");
+        model.addAttribute("allstudents",studentRepository.findAll());
+        model.addAttribute("allbooks", bookRepository.findAll());
+
         return "books/checkin";
     }
 
     @PostMapping("checkin") //http://localhost:8080/books/checkout?bookId=xxxx
-    public String processCheckin(@RequestParam(required = true) Integer bookId, @RequestParam(required = true) Integer studentId) {
+    public String processCheckin(Model model, @RequestParam(required = true) Integer bookId, @RequestParam(required = true) Integer studentId) {
         Optional<Book> result = bookRepository.findById(bookId);
         Book book = result.get();
         BookCheckout bookCheckout=bookCheckoutRepository.findByBookIdAndStudentIdAndIsCheckout(bookId,studentId,true);
+        if(bookCheckout ==null){
+           String message="Book "+bookId+" is not checked out by student "+studentId;
+           model.addAttribute("errorMsg", message);
+            model.addAttribute("bookId",bookId);
+            model.addAttribute("title", "Checkin book");
+            model.addAttribute("allstudents",studentRepository.findAll());
+            return "books/checkin";
+
+        }
         bookCheckout.setCheckout(false);
         bookCheckout.setActualReturnDate(new Date());
         int availableCopies = book.getAvailableCopiesToIssue();
