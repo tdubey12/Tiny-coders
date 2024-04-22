@@ -35,6 +35,7 @@ public class SpringSecurity {
                                         //for all books related URLs
                                         .requestMatchers("/books/**").hasRole("ADMIN")
                                         .requestMatchers("/books/hold").hasRole("ADMIN")
+                                        .requestMatchers("/books/unhold").hasRole("ADMIN")
                                         .requestMatchers("/books/search/**").hasRole("ADMIN")
                                         .requestMatchers("/books/detail/**").hasRole("ADMIN")
                                         .requestMatchers("/books/add/**").hasRole("ADMIN")

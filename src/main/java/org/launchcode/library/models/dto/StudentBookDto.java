@@ -19,6 +19,16 @@ public class StudentBookDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date heldUntilDate;
 
+    private boolean hold;
+
+    public boolean isHold() {
+        return hold;
+    }
+
+    public void setHold(boolean hold) {
+        this.hold = hold;
+    }
+
     public Integer getBookId() {
         return bookId;
     }
