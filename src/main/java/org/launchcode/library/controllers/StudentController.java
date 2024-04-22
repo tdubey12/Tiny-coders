@@ -7,6 +7,8 @@ import org.launchcode.library.models.StudentData;
 import org.launchcode.library.models.data.StudentBookRepository;
 import org.launchcode.library.models.data.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -52,6 +54,7 @@ public class StudentController {
     @GetMapping ("/search")
     public String displaySearchStudentForm (Model model){
         model.addAttribute("studentSearchOptions", studentSearchOptions);
+        model.addAttribute("searchType","all");
         model.addAttribute("students", studentRepository.findAll());
         return "students/search";
     }
@@ -68,6 +71,7 @@ public class StudentController {
         model.addAttribute("title", "Students with " + studentSearchOptions.get(searchType) + ": " + searchTerm);
         return "students/search";
     }
+
     //Anitha code for Student search
     /*@GetMapping("/detail/{studentId}")
     public String viewStudent(@PathVariable("studentId")String studentId,Model model) {
@@ -110,13 +114,22 @@ public class StudentController {
     }
 
     @PostMapping ("delete")
-    public String processDeleteStudent(@RequestParam(required = false) int[] StudentIds){
+    public String processDeleteStudent(@RequestParam(required = false) int[] StudentIds, Model model) {
+        String deleteerror;
         if (StudentIds != null)
         {
             for (int id : StudentIds) {
                 //remove the hold before deleting student
                 removeHold(id);
-                studentRepository.deleteById(id);
+                try {
+                    studentRepository.deleteById(id);
+                } catch (DataIntegrityViolationException e) {
+                    deleteerror = "Cannot delete Student ID " + id + ", library history present!";
+                    model.addAttribute("deleteerror", deleteerror);
+                    model.addAttribute("title", "Delete Student");
+                    model.addAttribute("students", studentRepository.findAll());
+                    return "students/delete";
+                }
             }
         }
         return "redirect:/students/";

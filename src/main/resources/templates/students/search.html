@@ -5,7 +5,7 @@
 <header th:replace="~{toolbar :: header}"></header>
 <header th:replace="fragments :: header2"></header>
 
-   <!--h1 th:text="${#strings.capitalizeWords(title)}"></h1-->
+<!--h1 th:text="${#strings.capitalizeWords(title)}"></h1-->
 <form th:action="@{/students/search/results}" method = "post">
     <h2>Search Student by:</h2>
     <p>
@@ -15,7 +15,7 @@
                         name="searchType"
                         th:id="${column.key}"
                         th:value="${column.key}"
-                        th:checked="${column.key == searchType}"/>
+                        th:checked="${column.key == searchType}">
                 <label th:for="${column.key}" th:text="${column.value}"></label>
             </span>
     </p>
@@ -39,7 +39,7 @@
         <tr class="table-danger" th:each="student : ${students}">
             <td class="table-success">
 
-            <a th:text="${student.firstname}" th:href="'/students/update?studentId=' + ${student.id}"></a></td>
+                <a th:text="${student.firstname}" th:href="'/students/update?studentId=' + ${student.id}"></a></td>
 
             <td class="table-success">
                 <p th:text="${student.lastname}"></p></td>

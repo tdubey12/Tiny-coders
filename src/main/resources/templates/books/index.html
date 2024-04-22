@@ -15,14 +15,14 @@
                          name="searchType"
                          th:id="${column.key}"
                          th:value="${column.key}"
-                         th:checked="${column.key == 'all'}"/>
+                         th:checked="${column.key == searchType}"/>
                  <label th:for="${column.key}" th:text="${column.value}"></label>
              </span>
         </p>
 
         <p>
             <label for="searchTerm">Keyword:</label>
-            <input type="text" name="searchTerm" id="searchTerm" />
+            <input type="text" name="searchTerm" id="searchTerm" th:value="${searchTerm}"/>
         </p>
 
         <input type="submit" value="Search" />
@@ -69,27 +69,6 @@
             <input type="submit" value="Add Book" />
         </form>
     </div>
-
-<!--teena code-->
-<!--<div class="container body-content">
-    <h2>Books</h2>
-    <ul>
-        <li th:each="book : ${books}">
-            <div><a th:href="@{'/books/detail?bookId=' + ${book.id}}" th:text="${book.name}"></a>
-           <a th:href="@{'/books/update?bookId=' + ${book.id}}" >update</a>
-            <a th:href="@{'/books/delete?bookId=' + ${book.id}}" >delete</a>
-                <a th:href="@{'/books/checkout?bookId=' + ${book.id}}" >Checkout</a>
-                <a th:href="@{'/books/checkin?bookId=' + ${book.id}}" >Checkin</a>
-
-            </div>
-
-        </li>
-
-    </ul>
-    <div>
-    <a th:href="@{'/books/add'}">Add Book</a>
-    </div>
-</div>-->
 </div>
 </body>
 </html>

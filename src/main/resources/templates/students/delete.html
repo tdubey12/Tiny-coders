@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head th:replace="fragments :: head"></head>
+<link rel="stylesheet" th:href="@{/styles.css}">
 <body class="container">
 <header th:replace="~{toolbar :: header}"></header>
 <header th:replace="fragments :: header2"></header>
 
 <form th:action="@{/students/delete}" method="post">
-
+   <p class="error" th:text="${deleteerror}"></p>
    <th:block th:each="student : ${students}">
       <div>
          <label>
-            <span th:text="${student.firstname}"></span>
-            <input type="checkbox" name="StudentIds" th:value="${student.id}" class="form-control">
+            <span th:text="${student.id}+' | '+${student.firstname}"></span>
+            <input th:type="checkbox" name="StudentIds" th:value="${student.id}" class="form-control">
          </label>
       </div><br>
    </th:block>
