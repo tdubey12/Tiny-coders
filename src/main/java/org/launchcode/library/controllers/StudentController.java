@@ -1,14 +1,13 @@
 package org.launchcode.library.controllers;
 
 import jakarta.validation.Valid;
-import org.launchcode.library.models.Student;
-import org.launchcode.library.models.StudentBook;
-import org.launchcode.library.models.StudentData;
+import org.launchcode.library.models.*;
+import org.launchcode.library.models.data.BookCheckoutRepository;
+import org.launchcode.library.models.data.BookRepository;
 import org.launchcode.library.models.data.StudentBookRepository;
 import org.launchcode.library.models.data.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -27,6 +26,12 @@ public class StudentController {
 
     @Autowired
     private StudentBookRepository studentBookRepository;
+
+    @Autowired
+    private BookRepository bookRepository;
+
+    @Autowired
+    private BookCheckoutRepository bookCheckoutRepository;
 
     //Anitha code for search students
 
@@ -141,6 +146,8 @@ public class StudentController {
     public String updateStudent(@RequestParam(required=false) Integer studentId, Model model) {
         model.addAttribute("title", "Student Management");
         Iterable<Student> students;
+        Iterable<Book> books;
+        Iterable<BookCheckout> bookCheckouts;
         if (studentId == null) {
             //added searchOptions
             model.addAttribute("studentSearchOptions", studentSearchOptions);
@@ -155,7 +162,22 @@ public class StudentController {
             model.addAttribute("studentfirstname", student.getFirstname());
             model.addAttribute("studentlastname", student.getLastname());
             model.addAttribute("studentcontactemail", student.getContactEmail());
-            //        return "students/index";
+
+            /*
+            // Fetch books checked out by student
+            books = bookRepository.findAll();
+            bookCheckouts = bookCheckoutRepository.findAll();
+            for (BookCheckout bookCheckout : bookCheckouts){
+                if (bookCheckout.getStudent().getId() == studentId) {
+                    Integer id = bookCheckout.getBook().getId();
+                    ArrayList<Optional<Book>> checkedoutBook = null;
+                        checkedoutBook.add(bookRepository.findById(id));
+                }
+            }
+            // Fetch books checked out by student
+            */
+
+
             return "students/update";
         }
     }
