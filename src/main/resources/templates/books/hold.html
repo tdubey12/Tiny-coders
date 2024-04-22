@@ -34,5 +34,33 @@
 <div>
     <a th:href="@{'/books/'}"><button class="btn btn-primary" type="submit">Back To Books</button></a>
 </div>
+
+<table class="table table-striped">
+    <tr>
+        <th>Book Name</th>
+        <th>Student Name</th>
+        <th>Issue Date</th>
+        <th>Hold valid until Date</th>
+        <th>Action</th>
+
+    </tr>
+    <tr class="table-danger" th:each="studentBook : ${bookHoldList}">
+        <td><p th:text="${studentBook.book.name}"></p>
+        </td>
+        <td >
+            <p th:text="${studentBook.student.firstname}">
+            </p>
+        </td>
+        <td><p th:text="${studentBook.issueDate}"></p>
+        </td>
+        <td ><p th:text="${studentBook.heldUntilDate}"></p>
+        </td>
+        <td><p><a th:href="@{'/books/unhold?bookId=' + ${studentBook.book.id}}+'&studentId='+${studentBook.student.id}"><button class="btn btn-primary" type="submit">Unhold</button></a></p></td>
+
+        </td>
+    </tr>
+</table>
+
+
 </body>
 </html>

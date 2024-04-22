@@ -280,21 +280,17 @@ public class BookController {
     //Anitha code for hold a book
     @GetMapping("hold/{bookId}")
     public String displayHold(@PathVariable("bookId")Integer bookId,Model model) {
-
+        StudentBookDto studentBookDto = new StudentBookDto();
         Optional<Book> optionalBook = bookRepository.findById(bookId);
         Book book = optionalBook.get();
-        /**if(book.getAvailableCopiesToIssue() == 0){
-            model.addAttribute("message","Copies available, do checkout instead of hold");
-            return "books/hold";
-        }**/
-        StudentBookDto studentBookDto = new StudentBookDto();
         studentBookDto.setBookId(bookId);
         studentBookDto.setBookName(book.getName());
-        model.addAttribute("studentBookDto",studentBookDto);
-        model.addAttribute("allstudents",studentRepository.findAll());
-        model.addAttribute("title", "Hold Book");
+        model.addAttribute("studentBookDto",studentBookDto);//for displaying bookid and student id
+        model.addAttribute("allstudents",studentRepository.findAll());//for displaying drop down for student
+        model.addAttribute("bookHoldList",getStudentBookList(bookId));//displaying list of hold on bottom
         return "books/hold";
     }
+
     //Anitha code for hold a book
     @PostMapping("hold")
     public String processHold(@ModelAttribute @Valid StudentBookDto studentBookDto,
@@ -302,6 +298,13 @@ public class BookController {
         if (errors.hasErrors()) {
             return "books/hold";
         }
+        if(isStudentAlreadyHoldTheBook(studentBookDto.getBookId(),studentBookDto.getStudentId())){
+            model.addAttribute("errorMsg", "Student already has the book on hold");
+            model.addAttribute("bookHoldList",getStudentBookList(studentBookDto.getBookId()));
+            model.addAttribute("allstudents",studentRepository.findAll());
+            return "books/hold";
+        }
+        //creating object and setting field value
         int studentId = studentBookDto.getStudentId();
         Optional<Book> result = bookRepository.findById(studentBookDto.getBookId());
         Book book = result.get();
@@ -318,12 +321,63 @@ public class BookController {
         studentBook.setHeldUntilDate(studentBookDto.getHeldUntilDate());
         studentBook.setCheckOut(false);
         studentBook.setHold(true);
+        //reduces copies available
         int availableCopies = book.getAvailableCopiesToIssue();
         studentBookRepository.save(studentBook);
-        book.setAvailableCopiesToIssue(availableCopies--);
+        availableCopies--;
+        book.setAvailableCopiesToIssue(availableCopies);//book table
+        bookRepository.save(book);
+        return "redirect:";
+    }
+
+    //unholding
+    @GetMapping("unhold")
+    public String processUnHold(@RequestParam(required = true) Integer bookId,
+                                @RequestParam(required = true) Integer studentId,
+                              Model model) {
+        removeHold(bookId,studentId);
+        Optional<Book> result = bookRepository.findById(bookId);
+        Book book = result.get();
+        //increase copies available
+        int availableCopies = book.getAvailableCopiesToIssue();
+        availableCopies++;
+        book.setAvailableCopiesToIssue(availableCopies);
         bookRepository.save(book);
         return "redirect:";
 
+    }
+
+    //checks bookId is there and add to studentBookList
+    private List<StudentBook> getStudentBookList(int bookId){
+        List<StudentBook> studentBookList = new ArrayList<>();
+        Iterable<StudentBook> studentBookIterable = studentBookRepository.findAll();
+        for (StudentBook studentBook : studentBookIterable){
+            if(studentBook.getBook().getId() == bookId){
+                studentBookList.add(studentBook);
+            }
+        }
+        return studentBookList;
+    }
+    //checks if students have that book on hold already
+    private boolean isStudentAlreadyHoldTheBook(int bookId, int studentId){
+        Iterable<StudentBook> studentBookList = studentBookRepository.findAll();
+        boolean isStudentAlreadyHoldTheBook = false;
+        for (StudentBook studentBook : studentBookList){
+            if(studentBook.getBook().getId() == bookId && studentBook.getStudent().getId() == studentId ){
+                isStudentAlreadyHoldTheBook = true;
+            }
+        }
+        return isStudentAlreadyHoldTheBook;
+    }
+
+    //removes the records
+    private void removeHold(int bookId, int studentId){
+        Iterable<StudentBook> studentBookList = studentBookRepository.findAll();
+        for (StudentBook studentBook : studentBookList){
+            if(studentBook.getBook().getId() == bookId && studentBook.getStudent().getId() == studentId ){
+                studentBookRepository.delete(studentBook);
+            }
+        }
     }
 
     //Anitha code for deleting book on hold
