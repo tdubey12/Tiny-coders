@@ -227,6 +227,21 @@ public class BookController {
         newBookCheckout.setCheckout(true);
         Optional<Book> resultBook = bookRepository.findById(bookId);
         Book book = resultBook.get();
+        if(book.getAvailableCopiesToIssue() == 0){
+            String errMsg = "Book "+bookId+ " not available to checkout";
+            BookCheckout bookCheckout =new BookCheckout();
+            Calendar c= Calendar.getInstance();
+            c.add(Calendar.DATE, 30);
+            Date date=c.getTime();
+            bookCheckout.setExpectedReturnDate(date);
+            model.addAttribute(bookCheckout);
+            model.addAttribute("bookId",bookId);
+            model.addAttribute("title", "Checkout book");
+            model.addAttribute("allstudents",studentRepository.findAll());
+            model.addAttribute("errorMsg", errMsg);
+
+            return "books/checkout";
+        }
         newBookCheckout.setBook(book);
         //student code later
         Optional<Student> resultStudent = studentRepository.findById(studentId);
