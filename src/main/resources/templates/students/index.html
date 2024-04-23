@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="~{toolbar :: head}"></head>
+<body class="container">
+<header th:replace="~{toolbar :: header}"></header>
+<header th:replace="fragments :: header2"></header>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Contact Email</th>
+    </tr>
+    </thead>
+    <tr th:each="student : ${students}">
+        <td><a th:text="${student.id}" th:href="'/students/update?studentId=' + ${student.id}"></a></td>
+        <td th:text="${student.firstname}"></td>
+        <td th:text="${student.lastname}"></td>
+        <td th:text="${student.contactEmail}"></td>
+    </tr>
+</table>
+</body>
+</html>

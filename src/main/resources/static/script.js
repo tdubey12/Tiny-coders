@@ -1,0 +1,1 @@
+let appName = "Learner's Library";

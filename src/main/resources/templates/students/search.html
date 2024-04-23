@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+<header th:replace="~{toolbar :: header}"></header>
+<header th:replace="fragments :: header2"></header>
+
+<!--h1 th:text="${#strings.capitalizeWords(title)}"></h1-->
+<form th:action="@{/students/search/results}" method = "post">
+    <h2>Search Student by:</h2>
+    <p>
+            <span th:each="column : ${studentSearchOptions}">
+                <input
+                        type="radio"
+                        name="searchType"
+                        th:id="${column.key}"
+                        th:value="${column.key}"
+                        th:checked="${column.key == searchType}">
+                <label th:for="${column.key}" th:text="${column.value}"></label>
+            </span>
+    </p>
+
+    <p>
+        <label for="searchTerm">Keyword:</label>
+        <input type="text" name="searchTerm" id="searchTerm" th:value="${searchTerm}"/>
+    </p>
+    <input type="submit" value="Search" />
+</form>
+<hr />
+<div class="container">
+    <table class="table table-striped">
+        <tr>
+            <th>Student First Name</th>
+            <th>Student Last Name</th>
+            <th>Student Email</th>
+        </tr>
+    </table>
+    <table class="table table-striped">
+        <tr class="table-danger" th:each="student : ${students}">
+            <td class="table-success">
+
+                <a th:text="${student.firstname}" th:href="'/students/update?studentId=' + ${student.id}"></a></td>
+
+            <td class="table-success">
+                <p th:text="${student.lastname}"></p></td>
+            <td class="table-success">
+                <p th:text="${student.contactEmail}"></p>
+            </td>
+        </tr>
+    </table>
+</div>

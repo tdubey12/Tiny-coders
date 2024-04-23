@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head th:replace="~{toolbar :: head}"></head>
+<body class="container">
+<header th:replace="~{toolbar :: header}"></header>
+<div class="container">
+    <!-- <h1 th:text="${#strings.capitalizeWords(title)}"></h1-->
+    <form th:action="@{/books/search/results}" method = "post">
+        <h2>Search Book by:</h2>
+        <p>
+             <span th:each="column : ${columns}">
+                 <input
+                         type="radio"
+                         name="searchType"
+                         th:id="${column.key}"
+                         th:value="${column.key}"
+                         th:checked="${column.key == searchType}"/>
+                 <label th:for="${column.key}" th:text="${column.value}"></label>
+             </span>
+        </p>
+
+        <p>
+            <label for="searchTerm">Keyword:</label>
+            <input type="text" name="searchTerm" id="searchTerm" th:value="${searchTerm}"/>
+        </p>
+
+        <input type="submit" value="Search" />
+    </form>
+
+    <hr />
+    <div class="container">
+        <h2>Books</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>Book Name</th>
+                <th>Author Name</th>
+                <th>Genre</th>
+                <th>Available Copies to Issue</th>
+                <th>Action</th>
+                <th>Action</th>
+                <th>Action</th>
+                <th>Action</th>
+                <th>Action</th>
+            </tr>
+            <tr class="table-danger" th:each="book : ${books}">
+                <td class="table-success">
+                    <p>
+                        <a th:href="@{'/books/detail?bookId=' + ${book.id}}" th:text="${book.name}"></a>
+                    </p>
+                </td>
+                <td><p th:text="${book.authorName}"></p>
+                </td>
+                <td><p th:text="${book.genre}"></p>
+                </td>
+                <td text-align="center"><p th:text="${book.availableCopiesToIssue}"></p>
+                </td>
+                <td><p><a th:href="@{'/books/update?bookId=' + ${book.id}}"><button class="btn btn-primary" type="submit">Update</button></a></p></td>
+                <td><p><a th:href="@{'/books/delete?bookId=' + ${book.id}}"><button class="btn btn-primary" type="submit">Delete</button></a></p></td>
+                <td><p><a th:href="@{'/books/checkout?bookId=' + ${book.id}}"><button class="btn btn-primary" type="submit" th:disabled="${book.availableCopiesToIssue == 0}">Checkout</button></a></p></td>
+                <td><p><a th:href="@{'/books/checkin?bookId=' + ${book.id}}"><button class="btn btn-primary" type="submit">Checkin</button></a></p></td>
+                <td><p><a th:href="@{'/books/hold/' + ${book.id}}"><button class="btn btn-primary" type="submit">Hold/Unhold</button></a></p></td>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="container">
+        <form th:action="@{/books/add}" method = "get">
+            <input type="submit" value="Add Book" />
+        </form>
+    </div>
+</div>
+</body>
+</html>

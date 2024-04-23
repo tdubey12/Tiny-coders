@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+<header th:replace="~{toolbar :: header}"></header>
+<header th:replace="fragments :: header3"></header>
+
+<form th:action="@{/booksinfo/search}" method = "post">
+<p>
+    <label th:for="${searchTerm}">Keyword:</label>
+    <input th:type="text" name="searchTerm" value="" />
+</p>
+    <input type="submit" value="Search" />
+</form>
+
+<body>
+
+
+    <table class="table table-striped">
+    <tr th:each="book : ${books}">
+        <table class="table table-striped">
+            <div>
+                <!--img th:if="${book.volumeInfo != null and book.volumeInfo.imageLinks != null}"
+                th:src="${book.volumeInfo.imageLinks.thumbnail}" alt="Thumbnail"-->
+                <!--img th:src="${book.volumeInfo.imageLinks.thumbnail}" alt="Thumbnail"-->
+                <img th:src="${book.volumeInfo.imageLinks !=  null?book.volumeInfo.imageLinks.thumbnail: ''}"
+                     alt="Thumbnail">
+            </div>
+        <thead class="thead-dark">
+            <h2 th:text="${book.volumeInfo.title}" class="bold"></h2>
+        </thead>
+            <tbody>
+            <td>
+            <h6>Author Name : </h6>
+            <span th:each="author : ${book.volumeInfo.authors}">
+                <p th:text="${author}"></p>
+            </span>
+        </td>
+        <td>
+            <h6>Genre : </h6>
+            <span th:each="categories : ${book.volumeInfo.categories}">
+                <p th:text="${categories}"></p>
+            </span>
+        </td>
+            <body th:class="light">
+        <p th:text="${book.volumeInfo.description}"></p>
+        <p th:text="${book.volumeInfo.mainCategory}"></p>
+        <h6> Book Rating: </h6>
+        <p th:text="${book.volumeInfo.averageRating}"></p>
+            </body>
+            </tbody>
+
+        </table>
+    </tr>
+    </table>
+
+
+</body>
+</body>
+</html>
+

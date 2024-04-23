@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="~{toolbar :: head}"></head>
+<body class="container">
+<header th:replace="~{toolbar :: header}"></header>
+<p th:text="${errorMsg}" style="color:red;"></p>
+
+<form  method="post">
+    <div class="form-group">
+        <label>Book Id
+            <input th:value="${bookId}" name="bookId" type="text" class="form-control" readonly>
+        </label>
+        <!--select name="bookId">
+            <option value="">Select Book</option>
+            <option th:each="book : ${allbooks}" th:value="${book.id}" th:text="${book.id}+'|'+${book.name}"></option>
+        </select-->
+        <!--label>Student Id
+            <input name="studentId" type="text" class="form-control" >
+        </label-->
+        <select name="studentId" required>
+            <option value="">Select Student</option>
+            <option th:each="student : ${allstudents}" th:value="${student.id}" th:text="${student.id}+' | '+${student.firstname}"></option>
+        </select>
+
+       <label>Expected Return Date
+           <input type="date" th:field="${bookCheckout.expectedReturnDate}" th:value="${bookCheckout.expectedReturnDate}" class="form-control">
+        </label>
+
+    </div>
+    <br/>
+
+    <div class="form-group">
+        <input type="submit" value="Submit" class="btn btn-success">
+    </div>
+</form>
+<div>
+    <a th:href="@{'/books/'}">Back To Books</a>
+</div>
+</body>
+</html>

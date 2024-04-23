@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="~{toolbar :: head}"></head>
+<body class="container">
+<header th:replace="~{toolbar :: header}"></header>
+<br />
+<!--header th:replace="fragments :: header"></header-->
+
+<p th:text="${errorMsg}" style="color:red;"></p>
+
+<form  method="post" action="/books/hold">
+    <div class="form-group">
+        <label>Book Name
+            <input type="hidden" th:field="${studentBookDto.bookId}" class="form-control">
+            <input type="text" th:field="${studentBookDto.bookName}" class="form-control">
+        </label>
+        <select th:field="*{studentBookDto.studentId}">
+            <option value="">Select Student</option>
+            <option th:each="student : ${allstudents}" th:value="${student.id}" th:text="${student.lastname}"></option>
+        </select>
+        <label>Hold Date
+            <input type="date" th:field="${studentBookDto.issueDate}" class="form-control">
+        </label>
+        <label>Hold valid until
+            <input type="date" th:field="${studentBookDto.heldUntilDate}" class="form-control">
+        </label>
+    </div>
+    <br/>
+
+    <div class="form-group">
+        <input type="submit" value="Submit" class="btn btn-success">
+    </div>
+</form>
+<div>
+    <a th:href="@{'/books/'}"><button class="btn btn-primary" type="submit">Back To Books</button></a>
+</div>
+
+<table class="table table-striped">
+    <tr>
+        <th>Book Name</th>
+        <th>Student Name</th>
+        <th>Issue Date</th>
+        <th>Hold valid until Date</th>
+        <th>Action</th>
+
+    </tr>
+    <tr class="table-danger" th:each="studentBook : ${bookHoldList}">
+        <td><p th:text="${studentBook.book.name}"></p>
+        </td>
+        <td >
+            <p th:text="${studentBook.student.firstname}">
+            </p>
+        </td>
+        <td><p th:text="${studentBook.issueDate}"></p>
+        </td>
+        <td ><p th:text="${studentBook.heldUntilDate}"></p>
+        </td>
+        <td><p><a th:href="@{'/books/unhold?bookId=' + ${studentBook.book.id}}+'&studentId='+${studentBook.student.id}"><button class="btn btn-primary" type="submit">Unhold</button></a></p></td>
+
+        </td>
+    </tr>
+</table>
+
+
+</body>
+</html>
