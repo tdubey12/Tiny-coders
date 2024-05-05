@@ -52,7 +52,7 @@
         </label>
         <p class="error" th:errors="${book.genre}"></p>
     </div>
-    <br/>
+    <!--br/>
     <span  STYLE="font-weight:bold">Manage Inventory</span>
     <br/>
     <div class="form-group">
@@ -71,13 +71,14 @@
         <label>Number of book copies to remove from library
             <input th:field="${booksInventory.booksToRemove}" class="form-control" >
         </label>
-    </div>
+    </div-->
     <br/>
 
     <div class="form-group">
         <input type="submit" value="update" class="btn btn-success">
     </div>
 </form>
+</br>
 <div>
     <a th:href="@{'/books/'}">Back To Books</a>
 </div>
