@@ -1,0 +1,44 @@
+<<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="~{toolbar :: head}"></head>
+<body class="container">
+<header th:replace="~{toolbar :: header}"></header>
+<!--header th:replace="fragments :: header"></header-->
+<p th:text="${errorMsg}" style="color:red;"></p>
+
+<form method="post"  >
+    <div class="form-group">
+        <input name="bookId" type="hidden" class="form-control"/>
+        <input th:field="${book.availableCopiesToIssue}" type="hidden" class="form-control"/>
+        <label>Name :
+            <span th:text="${book.name}"></span>
+        </label>
+    </div>
+    <div class="form-group">
+        <label>Number of book copies in library :
+            <span th:text="${book.copies}"></span>
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label>Number of book copies to add to library:
+            <input th:field="${booksInventory.booksToAdd}" >
+        </label>
+    </div>
+    <div class="form-group">
+        <label>Number of book copies to remove from library:
+            <input th:field="${booksInventory.booksToRemove}" >
+        </label>
+    </div>
+    </br>
+    <div class="form-group">
+        <input type="submit" value="Update Inventory" class="btn btn-success">
+    </div>
+</form>
+</br>
+<div>
+    <a th:href="@{'/books/'}">Back To Books</a>
+</div>
+</body>
+</html>

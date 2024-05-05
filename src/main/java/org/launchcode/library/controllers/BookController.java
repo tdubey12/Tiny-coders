@@ -117,7 +117,7 @@ public class BookController {
         Optional<Book> result = bookRepository.findById(bookId);
         Book book = result.get();
         model.addAttribute(book);
-        model.addAttribute(new BooksInventory());
+        //model.addAttribute(new BooksInventory());
 
         return "books/update";
     }
@@ -152,6 +152,54 @@ public class BookController {
         return "redirect:/books/update";
 
     }
+
+    @GetMapping("/inventory") //http://localhost:8080/books/update?bookId=xx
+    public String displayInventoryForm(@RequestParam Integer bookId, Model model){
+        model.addAttribute("title", "Manage Book Inventory");
+
+        Optional<Book> result = bookRepository.findById(bookId);
+        Book book = result.get();
+        model.addAttribute(book);
+        model.addAttribute("bookId",bookId);
+
+        model.addAttribute(new BooksInventory());
+
+        return "books/inventory";
+    }
+    @PostMapping("/inventory")
+    public String processInventoryBookForm(@ModelAttribute @Valid BooksInventory booksInventory,
+                                           @RequestParam(required = true) Integer bookId,
+                                            Errors errors,
+                                            Model model) {
+        Optional<Book> resultBook = bookRepository.findById(bookId);
+        Book book = resultBook.get();
+
+        if (!errors.hasErrors()) {
+
+            if(booksInventory.getBooksToAdd()>0) {
+                int copies=book.getCopies()+ booksInventory.getBooksToAdd();
+                int availableCopies=book.getAvailableCopiesToIssue()+booksInventory.getBooksToAdd();
+
+                book.setCopies(copies);
+                book.setAvailableCopiesToIssue(availableCopies);
+            }
+            if(booksInventory.getBooksToRemove()>0){
+                int copies= book.getCopies()- booksInventory.getBooksToRemove();
+
+                int availableCopies= book.getAvailableCopiesToIssue()- booksInventory.getBooksToRemove();
+                book.setCopies(copies);
+                book.setAvailableCopiesToIssue(availableCopies);
+            }
+            bookRepository.save(book);
+            //return "redirect:detail?bookId=" + book.getId();
+
+//just for now i redirected to view page.
+            return "redirect:/books/";
+        }
+        //return "redirect:update";
+        return "redirect:/books/inventory";
+
+    }
     //details of the book
     @GetMapping("detail") //http://localhost:8080/books/detail?bookId=xx
     public String displayBookDetail(@RequestParam Integer bookId, Model model){
@@ -162,28 +210,11 @@ public class BookController {
         return "books/detail";
     }
 
-    //delete by id
-    @GetMapping("deletelist") //http://localhost:8080/books/deletelist
-    public String displayDeleteBooksForm(Model model) {
-        model.addAttribute("title", "Delete Books");
-        model.addAttribute("books", bookRepository.findAll());
-        return "books/delete";
-    }
 
-    @PostMapping("deletebooks") //http://localhost:8080/books/delete
-    public String processDeleteBooks(@RequestParam(required = false) Integer[] bookIds) {
-
-        if (bookIds != null) {
-            for (int id : bookIds) {
-                bookRepository.deleteById(id);
-            }
-        }
-        return "redirect:";
-    }
 
     //delete
     @GetMapping("delete") //http://localhost:8080/books/delete?bookId=xx
-    public String displayBookDelete(@RequestParam Integer bookId, Model model){
+    public String displayBookDelete(@RequestParam(required = true) Integer bookId, Model model){
         Optional<Book> result = bookRepository.findById(bookId);
         Book book = result.get();
         model.addAttribute(book);
@@ -204,7 +235,7 @@ public class BookController {
 
     //checkout
     @GetMapping("checkout") //http://localhost:8080/books/checkout
-    public String displayCheckout(Model model, int bookId){
+    public String displayCheckout(Model model, @RequestParam(required = true) Integer bookId){
         BookCheckout bookCheckout =new BookCheckout();
         Calendar c= Calendar.getInstance();
         c.add(Calendar.DATE, 30);
@@ -219,7 +250,7 @@ public class BookController {
     }
 
     @PostMapping("checkout") //http://localhost:8080/books/checkout?bookId=xxxx
-    public String processCheckout(@ModelAttribute @Valid BookCheckout newBookCheckout,int bookId, int studentId,
+    public String processCheckout(@ModelAttribute @Valid BookCheckout newBookCheckout,@RequestParam(required = true) Integer bookId, @RequestParam(required = true) Integer studentId,
                                   Errors errors, Model model) {
         if (errors.hasErrors()) {
             return "books/checkout";
@@ -259,7 +290,7 @@ public class BookController {
 
     //Checkin
     @GetMapping("checkin") //http://localhost:8080/books/checkin
-    public String displayCheckin(Model model, int bookId){
+    public String displayCheckin(Model model, @RequestParam(required = true) Integer bookId){
         model.addAttribute("bookId",bookId);
         model.addAttribute("title", "Checkin book");
         model.addAttribute("allstudents",studentRepository.findAll());
