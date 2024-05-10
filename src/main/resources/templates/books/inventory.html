@@ -15,17 +15,20 @@
             <span th:text="${book.name}"></span>
         </label>
     </div>
+    </br>
     <div class="form-group">
         <label>Number of book copies in library :
             <span th:text="${book.copies}"></span>
         </label>
     </div>
+    </br>
 
     <div class="form-group">
         <label>Number of book copies to add to library:
             <input th:field="${booksInventory.booksToAdd}" >
         </label>
     </div>
+    </br>
     <div class="form-group">
         <label>Number of book copies to remove from library:
             <input th:field="${booksInventory.booksToRemove}" >

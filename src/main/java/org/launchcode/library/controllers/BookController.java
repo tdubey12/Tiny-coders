@@ -243,6 +243,9 @@ public class BookController {
         bookCheckout.setExpectedReturnDate(date);
         model.addAttribute(bookCheckout);
         model.addAttribute("bookId",bookId);
+        Optional<Book> result = bookRepository.findById(bookId);
+        Book book = result.get();
+        model.addAttribute(book);
         model.addAttribute("title", "Checkout book");
         model.addAttribute("allstudents",studentRepository.findAll());
 
@@ -259,6 +262,8 @@ public class BookController {
         Optional<Book> resultBook = bookRepository.findById(bookId);
         Book book = resultBook.get();
         if(book.getAvailableCopiesToIssue() == 0){
+            model.addAttribute(book);
+
             String errMsg = "Book "+bookId+ " not available to checkout";
             BookCheckout bookCheckout =new BookCheckout();
             Calendar c= Calendar.getInstance();
@@ -291,6 +296,9 @@ public class BookController {
     //Checkin
     @GetMapping("checkin") //http://localhost:8080/books/checkin
     public String displayCheckin(Model model, @RequestParam(required = true) Integer bookId){
+        Optional<Book> result = bookRepository.findById(bookId);
+        Book book = result.get();
+        model.addAttribute(book);
         model.addAttribute("bookId",bookId);
         model.addAttribute("title", "Checkin book");
         model.addAttribute("allstudents",studentRepository.findAll());
@@ -305,6 +313,7 @@ public class BookController {
         Book book = result.get();
         BookCheckout bookCheckout=bookCheckoutRepository.findByBookIdAndStudentIdAndIsCheckout(bookId,studentId,true);
         if(bookCheckout ==null){
+            model.addAttribute(book);
            String message="Book "+bookId+" is not checked out by student "+studentId;
            model.addAttribute("errorMsg", message);
             model.addAttribute("bookId",bookId);

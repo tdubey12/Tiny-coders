@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/" xmlns="http://www.w3.org/1999/html">
 <head th:replace="~{toolbar :: head}"></head>
 <body class="container">
 <header th:replace="~{toolbar :: header}"></header>
@@ -7,17 +7,14 @@
 
 <form  method="post">
     <div class="form-group">
-        <label>Book Id
-            <input th:value="${bookId}" name="bookId" type="text" class="form-control" readonly>
+        <input name="bookId" type="hidden" class="form-control"/>
+        <label>Name :
+            <span th:text="${book.name}"></span>
         </label>
-        <!--select name="bookId">
-            <option value="">Select Book</option>
-            <option th:each="book : ${allbooks}" th:value="${book.id}" th:text="${book.id}|${book.name}"></option>
-        </select-->
-        <!--label>Student Id
-            <input name="studentId" type="text" class="form-control" >
-        </label-->
-        <select name="studentId" required>
+    </div>
+    </br>
+    <div>
+    <select name="studentId" required>
             <option value="" title="ID|First Name">Select Student</option>
             <option th:each="student : ${allstudents}" th:value="${student.id}" th:text="${student.id}+' | '+${student.firstname}"></option>
         </select>

@@ -16,42 +16,49 @@
 <form method="post"  >
     <div class="form-group">
         <input th:field="${book.id}" type="hidden" class="form-control"/>
+        <input th:field="${book.copies}" type="hidden" class="form-control" readonly>
         <input th:field="${book.availableCopiesToIssue}" type="hidden" class="form-control"/>
         <label>Name
             <input th:field="${book.name}" class="form-control">
         </label>
         <p class="error" th:errors="${book.name}"></p>
     </div>
+    </br>
     <div class="form-group">
         <label>Description
-            <input th:field="${book.description}" class="form-control">
+            <textarea th:field="${book.description}" class="form-control"></textarea>
         </label>
         <p class="error" th:errors="${book.description}"></p>
     </div>
+    </br>
     <div class="form-group">
         <label>Author Name
             <input th:field="${book.authorName}" class="form-control">
         </label>
         <p class="error" th:errors="${book.authorName}"></p>
     </div>
+    </br>
     <div class="form-group">
         <label>Publishing Year
             <input th:field="${book.publishingYear}" class="form-control">
         </label>
         <p class="error" th:errors="${book.publishingYear}"></p>
     </div>
+    </br>
     <div class="form-group">
         <label>Price
             <input th:field="${book.price}" class="form-control">
         </label>
         <p class="error" th:errors="${book.price}"></p>
     </div>
+    </br>
     <div class="form-group">
         <label>Genre
             <input th:field="${book.genre}" class="form-control">
         </label>
         <p class="error" th:errors="${book.genre}"></p>
     </div>
+    </br>
     <!--br/>
     <span  STYLE="font-weight:bold">Manage Inventory</span>
     <br/>
